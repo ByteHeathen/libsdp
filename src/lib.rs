@@ -43,7 +43,7 @@ pub use self::core::SdpNetworkType;
 pub use self::core::parse_network_type;
 pub use self::core::SdpAddressType;
 pub use self::core::parse_address_type;
-pub use self::core::Codec;
+pub use self::core::SdpCodec;
 pub use self::core::parse_codec;
 pub use self::core::SdpBandwidth;
 pub use self::core::parse_bandwidth_line;

@@ -39,14 +39,14 @@ a=SendRecv\r
     let medias = vec![
         SdpMedia::new(SdpMediaType::Audio, 40376, SdpProtocol::RtpAvp)
             .add_attribute(SdpAttribute::SendRecv)
-            .add_format(SdpMediaFormat::new(Codec::Pcma)
+            .add_format(SdpMediaFormat::new(SdpCodec::Pcma)
                     .add_attribute(SdpAttribute::RtpMap("PCMA/8000".into()))
             )
-            .add_format(SdpMediaFormat::new(Codec::Unknown(18))
+            .add_format(SdpMediaFormat::new(SdpCodec::Unknown(18))
                 .add_attribute(SdpAttribute::RtpMap("G729/8000".into())))
-            .add_format(SdpMediaFormat::new(Codec::G723)
+            .add_format(SdpMediaFormat::new(SdpCodec::G723)
                 .add_attribute(SdpAttribute::RtpMap("G723/8000".into())))
-            .add_format(SdpMediaFormat::new(Codec::Pcmu)
+            .add_format(SdpMediaFormat::new(SdpCodec::Pcmu)
                     .add_attribute(SdpAttribute::RtpMap("PCMU/8000".into())))
     ];
 
@@ -104,16 +104,16 @@ a=rtpmap:0 PCMU/8000\r
         SdpMedia::new(SdpMediaType::Audio, 40376, SdpProtocol::RtpAvp)
               .add_attribute(SdpAttribute::SendRecv)
 
-              .add_format(SdpMediaFormat::new(Codec::Pcma)
+              .add_format(SdpMediaFormat::new(SdpCodec::Pcma)
                 .add_attribute(SdpAttribute::RtpMap("PCMA/8000".into())))
 
-              .add_format(SdpMediaFormat::new(Codec::Unknown(18))
+              .add_format(SdpMediaFormat::new(SdpCodec::Unknown(18))
                 .add_attribute(SdpAttribute::RtpMap("G729/8000".into())))
 
-            .add_format(SdpMediaFormat::new(Codec::G723)
+            .add_format(SdpMediaFormat::new(SdpCodec::G723)
               .add_attribute(SdpAttribute::RtpMap("G723/8000".into())))
 
-            .add_format(SdpMediaFormat::new(Codec::Pcmu)
+            .add_format(SdpMediaFormat::new(SdpCodec::Pcmu)
               .add_attribute(SdpAttribute::RtpMap("PCMU/8000".into())))
     ];
 

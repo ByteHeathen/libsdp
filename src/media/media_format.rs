@@ -1,17 +1,17 @@
 use crate::SdpAttribute;
 use crate::SdpConnection;
-use crate::Codec;
+use crate::SdpCodec;
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct SdpMediaFormat {
-    pub codec: Codec,
+    pub codec: SdpCodec,
     pub connection: Option<SdpConnection>,
     pub attributes: Vec<SdpAttribute>
 }
 
 impl SdpMediaFormat {
 
-    pub fn new(codec: Codec) -> SdpMediaFormat {
+    pub fn new(codec: SdpCodec) -> SdpMediaFormat {
         SdpMediaFormat {
             codec,
             connection: None,

@@ -4,7 +4,7 @@ use crate::parse::ParserResult;
 use crate::parse::parse_u32;
 use crate::parse::slice_to_string;
 
-use crate::Codec;
+use crate::SdpCodec;
 use crate::SdpMedia;
 use crate::SdpAttribute;
 use crate::SdpMediaFormat;
@@ -100,7 +100,7 @@ pub fn parse_attribute_list(input: &[u8]) -> ParserResult<(Vec<SdpAttribute>, Ve
      Ok((initial_data, (global, formats)))
 }
 
-named!(pub parse_attribute<(SdpAttributeType, Option<Codec>, Option<String>)>, do_parse!(
+named!(pub parse_attribute<(SdpAttributeType, Option<SdpCodec>, Option<String>)>, do_parse!(
     tag!("a=") >>
     ty: parse_attribute_type >>
     opt!(char!(':')) >>

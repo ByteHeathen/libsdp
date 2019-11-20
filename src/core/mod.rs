@@ -7,7 +7,7 @@ pub use self::address_type::SdpAddressType;
 pub use self::address_type::parse_address_type;
 
 mod codec;
-pub use self::codec::Codec;
+pub use self::codec::SdpCodec;
 pub use self::codec::parse_codec;
 
 mod bandwidth;

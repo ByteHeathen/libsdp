@@ -7,7 +7,7 @@ use std::fmt;
 // https://www.iana.org/assignments/rtp-parameters/rtp-parameters.xhtml#rtp-parameters-1
 
 #[derive(Debug, PartialEq, Clone)]
-pub enum Codec {
+pub enum SdpCodec {
     Pcmu,
     Gsm,
     G723,
@@ -16,33 +16,33 @@ pub enum Codec {
     Unknown(u32)
 }
 
-impl fmt::Display for Codec {
+impl fmt::Display for SdpCodec {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Codec::Pcmu => write!(f, "0"),
-            Codec::Gsm => write!(f, "3"),
-            Codec::G723 => write!(f, "4"),
-            Codec::Pcma => write!(f, "8"),
-            Codec::Jpeg => write!(f, "26"),
-            Codec::Unknown(num) => write!(f, "{}", num)
+            SdpCodec::Pcmu => write!(f, "0"),
+            SdpCodec::Gsm => write!(f, "3"),
+            SdpCodec::G723 => write!(f, "4"),
+            SdpCodec::Pcma => write!(f, "8"),
+            SdpCodec::Jpeg => write!(f, "26"),
+            SdpCodec::Unknown(num) => write!(f, "{}", num)
         }
     }
 }
 
-named!(pub _parse_codec<Codec>, alt!(
-    map!(tag!("0"), |_| Codec::Pcmu) |
-    map!(tag!("8"), |_| Codec::Pcma) |
-    map!(tag!("3"), |_| Codec::Gsm) |
-    map!(tag!("4"), |_| Codec::G723) |
-    map!(tag!("26"), |_| Codec::Jpeg) |
+named!(pub _parse_codec<SdpCodec>, alt!(
+    map!(tag!("0"), |_| SdpCodec::Pcmu) |
+    map!(tag!("8"), |_| SdpCodec::Pcma) |
+    map!(tag!("3"), |_| SdpCodec::Gsm) |
+    map!(tag!("4"), |_| SdpCodec::G723) |
+    map!(tag!("26"), |_| SdpCodec::Jpeg) |
     parse_unknown_codec
 ));
-named!(pub parse_codec<Codec>, do_parse!(
+named!(pub parse_codec<SdpCodec>, do_parse!(
     out: _parse_codec >>
     (out)
 ));
 
-named!(parse_unknown_codec<Codec>, do_parse!(
+named!(parse_unknown_codec<SdpCodec>, do_parse!(
     num: map_res!(take_while!(is_digit), parse_u32) >>
-    (Codec::Unknown(num))
+    (SdpCodec::Unknown(num))
 ));
