@@ -16,24 +16,6 @@ pub enum SdpAttribute {
     Fmtp(String)
 }
 
-//#[derive(Debug, PartialEq, Clone)]
-//pub struct SdpAttribute {
-//    pub ty: SdpAttributeType,
-//    pub value: Option<String>
-//}
-
-//impl SdpAttribute {
-//
-//    pub fn new(ty: SdpAttributeType) -> SdpAttribute {
-//        SdpAttribute { ty, value: None }
-//    }
-//
-//    pub fn value<S: Into<String>>(mut self, value: S) -> SdpAttribute {
-//        self.value = Some(value.into());
-//        self
-//    }
-//}
-
 named!(pub parse_global_attribute<SdpAttribute>, alt!(
     map!(tag!("a=sendrecv"), |_| SdpAttribute::SendOnly) |
     map!(tag!("a=recvonly"), |_| SdpAttribute::RecvOnly) |
@@ -53,14 +35,6 @@ named!(pub parse_fmtp_attribute<SdpAttribute>, do_parse!(
     data: map_res!(take_until!("\r"), slice_to_string) >>
     (SdpAttribute::Fmtp(data))
 ));
-
-//named!(pub parse_global_attribute<SdpAttribute>, do_parse!(
-//    tag!("a=") >>
-//    ty: map_res!(take_while!(is_alphanumeric), parse_attribute_type) >>
-//    value: opt!(map_res!(take_until!("\r"), slice_to_string)) >>
-//    tag!("\r\n") >>
-//    (SdpAttribute { ty: ty.1, value })
-//));
 
 pub fn parse_global_attributes(input: &[u8]) -> ParserResult<Vec<SdpAttribute>> {
     let mut output = vec![];
