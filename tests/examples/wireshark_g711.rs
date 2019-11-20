@@ -38,28 +38,16 @@ a=SendRecv\r
     let attributes = vec![];
     let medias = vec![
         SdpMedia::new(SdpMediaType::Audio, 40376, SdpProtocol::RtpAvp)
-            .add_attribute(SdpAttribute::new(SdpAttributeType::SendRecv))
-            .add_format(
-                SdpMediaFormat::new(Codec::Pcma)
-                    .add_attribute(SdpAttribute {
-                        ty: SdpAttributeType::Rtpmap,
-                        value: Some("PCMA/8000".into())
-            }))
+            .add_attribute(SdpAttribute::SendRecv)
+            .add_format(SdpMediaFormat::new(Codec::Pcma)
+                    .add_attribute(SdpAttribute::RtpMap("PCMA/8000".into()))
+            )
             .add_format(SdpMediaFormat::new(Codec::Unknown(18))
-            .add_attribute(SdpAttribute {
-                ty: SdpAttributeType::Rtpmap,
-                value: Some("G729/8000".into())
-            }))
+                .add_attribute(SdpAttribute::RtpMap("G729/8000".into())))
             .add_format(SdpMediaFormat::new(Codec::G723)
-                .add_attribute(SdpAttribute {
-                    ty: SdpAttributeType::Rtpmap,
-                    value: Some("G723/8000".into())
-            }))
+                .add_attribute(SdpAttribute::RtpMap("G723/8000".into())))
             .add_format(SdpMediaFormat::new(Codec::Pcmu)
-                    .add_attribute(SdpAttribute {
-                        ty: SdpAttributeType::Rtpmap,
-                        value: Some("PCMU/8000".into())
-            }))
+                    .add_attribute(SdpAttribute::RtpMap("PCMU/8000".into())))
     ];
 
     for attr in optional {
@@ -114,28 +102,19 @@ a=rtpmap:0 PCMU/8000\r
     let attributes = vec![];
     let medias = vec![
         SdpMedia::new(SdpMediaType::Audio, 40376, SdpProtocol::RtpAvp)
-            .add_attribute(SdpAttribute::new(SdpAttributeType::SendRecv))
-            .add_format(
-                SdpMediaFormat::new(Codec::Pcma)
-                    .add_attribute(SdpAttribute {
-                        ty: SdpAttributeType::Rtpmap,
-                        value: Some("PCMA/8000".into())
-            }))
-            .add_format(SdpMediaFormat::new(Codec::Unknown(18))
-            .add_attribute(SdpAttribute {
-                ty: SdpAttributeType::Rtpmap,
-                value: Some("G729/8000".into())
-            }))
+              .add_attribute(SdpAttribute::SendRecv)
+
+              .add_format(SdpMediaFormat::new(Codec::Pcma)
+                .add_attribute(SdpAttribute::RtpMap("PCMA/8000".into())))
+
+              .add_format(SdpMediaFormat::new(Codec::Unknown(18))
+                .add_attribute(SdpAttribute::RtpMap("G729/8000".into())))
+
             .add_format(SdpMediaFormat::new(Codec::G723)
-                .add_attribute(SdpAttribute {
-                    ty: SdpAttributeType::Rtpmap,
-                    value: Some("G723/8000".into())
-            }))
+              .add_attribute(SdpAttribute::RtpMap("G723/8000".into())))
+
             .add_format(SdpMediaFormat::new(Codec::Pcmu)
-                    .add_attribute(SdpAttribute {
-                        ty: SdpAttributeType::Rtpmap,
-                        value: Some("PCMU/8000".into())
-            }))
+              .add_attribute(SdpAttribute::RtpMap("PCMU/8000".into())))
     ];
 
     for attr in optional {

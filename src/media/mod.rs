@@ -67,10 +67,12 @@ impl fmt::Display for SdpMedia {
         }
         for format in &self.formats {
             for attribute in &format.attributes {
-                if let Some(value) = &attribute.value {
-                    write!(f, "\r\na={}:{} {}", attribute.ty, format.codec, value)?;
-                } else {
-                    write!(f, "\r\na={}:{}", attribute.ty, format.codec)?;
+                match attribute {
+                    SdpAttribute::SendOnly => write!(f, "\r\na=sendonly:{}", format.codec)?,
+                    SdpAttribute::RecvOnly => write!(f, "\r\na=recvonly:{}", format.codec)?,
+                    SdpAttribute::SendRecv => write!(f, "\r\na=sendrecv:{}", format.codec)?,
+                    SdpAttribute::RtpMap(data) => write!(f, "\r\na=rtpmap:{} {}", format.codec, data)?,
+                    SdpAttribute::Fmtp(data) => write!(f, "\r\na=fmtp:{} {}", format.codec, data)?
                 }
             }
         }

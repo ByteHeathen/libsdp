@@ -55,12 +55,46 @@ pub fn parse_attribute_list(input: &[u8]) -> ParserResult<(Vec<SdpAttribute>, Ve
         if let Some(codec) = &codec {
             for media_format in formats.iter_mut() {
                 if &media_format.codec == codec {
-                    media_format.attributes.push(SdpAttribute { ty: ty.clone(), value: value.clone() });
+                    match ty {
+                        SdpAttributeType::Rtpmap => {
+                            if let Some(value) = value {
+                                media_format.attributes.push(SdpAttribute::RtpMap(value));
+                            }
+                        },
+                        SdpAttributeType::Fmtp => {
+                            if let Some(value) = value {
+                                media_format.attributes.push(SdpAttribute::Fmtp(value));
+                            }
+                        },
+                        SdpAttributeType::SendOnly => {
+                            media_format.attributes.push(SdpAttribute::SendOnly);
+                        },
+                        SdpAttributeType::RecvOnly => {
+                            media_format.attributes.push(SdpAttribute::RecvOnly);
+                        },
+                        SdpAttributeType::SendRecv => {
+                            media_format.attributes.push(SdpAttribute::SendRecv);
+                        }
+                    }
                     break;
                 }
             }
         } else {
-            global.push(SdpAttribute { ty, value: value });
+            match ty {
+                SdpAttributeType::Rtpmap => {
+                    if let Some(value) = value {
+                        global.push(SdpAttribute::RtpMap(value))
+                    }
+                },
+                SdpAttributeType::Fmtp => {
+                    if let Some(value) = value {
+                        global.push(SdpAttribute::Fmtp(value))
+                    }
+                },
+                SdpAttributeType::SendOnly => global.push(SdpAttribute::SendOnly),
+                SdpAttributeType::RecvOnly => global.push(SdpAttribute::RecvOnly),
+                SdpAttributeType::SendRecv => global.push(SdpAttribute::SendRecv),
+            }
         }
      }
      Ok((initial_data, (global, formats)))

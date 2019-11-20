@@ -37,17 +37,14 @@ a=rtpmap:99 h263-1998/90000\r\n";
          SdpSessionAttributes::Timing(SdpTiming::new(2873397496, 2873404696))
     ];
     let attributes = vec![
-        SdpAttribute { ty: SdpAttributeType::RecvOnly , value: None }
+        SdpAttribute::RecvOnly
     ];
     let medias = vec![
         SdpMedia::new(SdpMediaType::Audio, 49170, SdpProtocol::RtpAvp)
             .add_format(SdpMediaFormat::new(Codec::Pcmu)),
         SdpMedia::new(SdpMediaType::Video, 51372, SdpProtocol::RtpAvp)
-            .add_format(SdpMediaFormat::new(Codec::Unknown(99)/*H263v2*/)
-                .add_attribute(SdpAttribute {
-                    ty: SdpAttributeType::Rtpmap,
-                    value: Some("h263-1998/90000".into())
-                })
+            .add_format(SdpMediaFormat::new(Codec::Unknown(99))
+                .add_attribute(SdpAttribute::RtpMap("h263-1998/90000".into()))
              )
     ];
     for attr in optional {
@@ -98,17 +95,14 @@ a=rtpmap:99 h263-1998/90000\r\n".to_string();
          SdpSessionAttributes::Timing(SdpTiming::new(2873397496, 2873404696))
     ];
     let attributes = vec![
-        SdpAttribute { ty: SdpAttributeType::RecvOnly , value: None }
+        SdpAttribute::RecvOnly
     ];
     let medias = vec![
         SdpMedia::new(SdpMediaType::Audio, 49170, SdpProtocol::RtpAvp)
             .add_format(SdpMediaFormat::new(Codec::Pcmu)),
         SdpMedia::new(SdpMediaType::Video, 51372, SdpProtocol::RtpAvp)
             .add_format(SdpMediaFormat::new(Codec::Unknown(99)/*H263v2*/)
-                .add_attribute(SdpAttribute {
-                    ty: SdpAttributeType::Rtpmap,
-                    value: Some("h263-1998/90000".into())
-                })
+                .add_attribute(SdpAttribute::RtpMap("h263-1998/90000".into()))
              )
     ];
     for attr in optional {
