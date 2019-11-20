@@ -1,4 +1,5 @@
 use crate::*;
+use crate::attributes::parse_optional_attributes;
 
 use std::fmt;
 
@@ -7,7 +8,7 @@ pub struct SdpOffer {
     pub version: SdpVersion,
     pub origin: SdpOrigin,
     pub name: SdpSessionName,
-    pub optional: Vec<SdpSessionAttributes>,
+    pub optional: Vec<SdpOptionalAttributes>,
     pub attributes: Vec<SdpAttribute>,
     pub media: Vec<SdpMedia>
 }
@@ -36,12 +37,12 @@ impl SdpOffer {
         }
     }
 
-    pub fn add_optional_attribute(mut self, attr: SdpSessionAttributes) -> SdpOffer {
+    pub fn add_optional_attribute(mut self, attr: SdpOptionalAttributes) -> SdpOffer {
         self.optional.push(attr);
         self
     }
 
-    pub fn optional_attributes(mut self, attr: Vec<SdpSessionAttributes>) -> SdpOffer {
+    pub fn optional_attributes(mut self, attr: Vec<SdpOptionalAttributes>) -> SdpOffer {
         self.optional = attr;
         self
     }
@@ -68,7 +69,7 @@ impl SdpOffer {
 
     pub fn get_connection(&self) -> Option<SdpConnection> {
         for thing in &self.optional {
-            if let SdpSessionAttributes::Connection(conn) = thing {
+            if let SdpOptionalAttributes::Connection(conn) = thing {
                 return Some(conn.clone());
             }
         }

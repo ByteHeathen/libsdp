@@ -5,7 +5,7 @@ use crate::parse::parse_u32;
 
 use std::fmt;
 
-use crate::SdpSessionAttributes;
+use crate::SdpOptionalAttributes;
 
 // https://www.iana.org/assignments/sdp-parameters/sdp-parameters.xhtml#sdp-parameters-3
 
@@ -71,8 +71,8 @@ named!(pub parse_bandwidth<SdpBandwidth>, alt!(
     parse_unknown_bandwidth
 ));
 
-named!(pub parse_bandwidth_line<SdpSessionAttributes>, do_parse!(
+named!(pub parse_bandwidth_line<SdpOptionalAttributes>, do_parse!(
     tag!("b=") >>
     width: parse_bandwidth >>
-    (SdpSessionAttributes::Bandwidth(width))
+    (SdpOptionalAttributes::Bandwidth(width))
 ));

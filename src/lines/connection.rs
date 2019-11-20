@@ -6,7 +6,7 @@ use crate::SdpNetworkType;
 use crate::parse_network_type;
 use crate::SdpAddressType;
 use crate::parse_address_type;
-use crate::SdpSessionAttributes;
+use crate::attributes::SdpOptionalAttributes;
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct SdpConnection {
@@ -30,9 +30,9 @@ impl fmt::Display for SdpConnection {
     }
 }
 
-named!(pub parse_connection_name<SdpSessionAttributes>, do_parse!(
+named!(pub parse_connection_name<SdpOptionalAttributes>, do_parse!(
     tag!("c=") >>
     conn: parse_connection >>
     tag!("\r\n") >>
-    (SdpSessionAttributes::Connection(conn))
+    (SdpOptionalAttributes::Connection(conn))
 ));

@@ -30,11 +30,11 @@ a=rtpmap:99 h263-1998/90000\r\n";
         address: "224.2.17.12/127".into()
     };
     let optional = vec![
-         SdpSessionAttributes::Information("A Seminar on the session description protocol".into()),
-         SdpSessionAttributes::Uri("http://www.example.com/seminars/sdp.pdf".into()),
-         SdpSessionAttributes::Email("j.doe@example.com (Jane Doe)".into()),
-         SdpSessionAttributes::Connection(connection),
-         SdpSessionAttributes::Timing(SdpTiming::new(2873397496, 2873404696))
+         SdpOptionalAttributes::Information("A Seminar on the session description protocol".into()),
+         SdpOptionalAttributes::Uri("http://www.example.com/seminars/sdp.pdf".into()),
+         SdpOptionalAttributes::Email("j.doe@example.com (Jane Doe)".into()),
+         SdpOptionalAttributes::Connection(connection),
+         SdpOptionalAttributes::Timing(SdpTiming::new(2873397496, 2873404696))
     ];
     let attributes = vec![
         SdpAttribute::RecvOnly
@@ -88,11 +88,11 @@ a=rtpmap:99 h263-1998/90000\r\n".to_string();
         address: "224.2.17.12/127".into()
     };
     let optional = vec![
-         SdpSessionAttributes::Information("A Seminar on the session description protocol".into()),
-         SdpSessionAttributes::Uri("http://www.example.com/seminars/sdp.pdf".into()),
-         SdpSessionAttributes::Email("j.doe@example.com (Jane Doe)".into()),
-         SdpSessionAttributes::Connection(connection),
-         SdpSessionAttributes::Timing(SdpTiming::new(2873397496, 2873404696))
+         SdpOptionalAttributes::Information("A Seminar on the session description protocol".into()),
+         SdpOptionalAttributes::Uri("http://www.example.com/seminars/sdp.pdf".into()),
+         SdpOptionalAttributes::Email("j.doe@example.com (Jane Doe)".into()),
+         SdpOptionalAttributes::Connection(connection),
+         SdpOptionalAttributes::Timing(SdpTiming::new(2873397496, 2873404696))
     ];
     let attributes = vec![
         SdpAttribute::RecvOnly

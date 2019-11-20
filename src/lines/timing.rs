@@ -1,7 +1,7 @@
 use nom::character::is_digit;
 
 use crate::parse::parse_u64;
-use crate::SdpSessionAttributes;
+use crate::attributes::SdpOptionalAttributes;
 
 use std::fmt;
 
@@ -21,11 +21,11 @@ impl fmt::Display for SdpTiming {
     }
 }
 
-named!(pub parse_time_line<SdpSessionAttributes>, do_parse!(
+named!(pub parse_time_line<SdpOptionalAttributes>, do_parse!(
     tag!("t=") >>
     timing: parse_timing >>
     tag!("\r\n") >>
-    (SdpSessionAttributes::Timing(timing))
+    (SdpOptionalAttributes::Timing(timing))
 ));
 
 impl SdpTiming {

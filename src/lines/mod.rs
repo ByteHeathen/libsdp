@@ -23,34 +23,34 @@ pub use self::connection::SdpConnection;
 pub use self::connection::parse_connection;
 pub use self::connection::parse_connection_name;
 
-use crate::SdpSessionAttributes;
+use crate::SdpOptionalAttributes;
 
 use crate::parse::slice_to_string;
 
-named!(pub parse_email_line<SdpSessionAttributes>, do_parse!(
+named!(pub parse_email_line<SdpOptionalAttributes>, do_parse!(
     tag!("e=") >>
     output: map_res!(take_until!("\r"), slice_to_string) >>
     tag!("\r\n") >>
-    (SdpSessionAttributes::Email(output))
+    (SdpOptionalAttributes::Email(output))
 ));
 
-named!(pub parse_phone_line<SdpSessionAttributes>, do_parse!(
+named!(pub parse_phone_line<SdpOptionalAttributes>, do_parse!(
     tag!("e=") >>
     output: map_res!(take_until!("\r"), slice_to_string) >>
     tag!("\r\n") >>
-    (SdpSessionAttributes::Phone(output))
+    (SdpOptionalAttributes::Phone(output))
 ));
 
-named!(pub parse_information_line<SdpSessionAttributes>, do_parse!(
+named!(pub parse_information_line<SdpOptionalAttributes>, do_parse!(
     tag!("i=") >>
     output: map_res!(take_until!("\r"), slice_to_string) >>
     tag!("\r\n") >>
-    (SdpSessionAttributes::Information(output))
+    (SdpOptionalAttributes::Information(output))
 ));
 
-named!(pub parse_uri_line<SdpSessionAttributes>, do_parse!(
+named!(pub parse_uri_line<SdpOptionalAttributes>, do_parse!(
     tag!("u=") >>
     output: map_res!(take_until!("\r"), slice_to_string) >>
     tag!("\r\n") >>
-    (SdpSessionAttributes::Uri(output))
+    (SdpOptionalAttributes::Uri(output))
 ));
