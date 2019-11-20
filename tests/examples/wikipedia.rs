@@ -37,9 +37,9 @@ a=rtpmap:99 h263-1998/90000\r\n";
     ];
     let medias = vec![
         SdpMedia::new(SdpMediaType::Audio, 49170, SdpProtocol::RtpAvp)
-            .format(SdpMediaFormat::new(SdpCodec::Pcmu)),
+            .format(SdpMediaFormat::new(SdpCodecIdentifier(0))),
         SdpMedia::new(SdpMediaType::Video, 51372, SdpProtocol::RtpAvp)
-            .format(SdpMediaFormat::new(SdpCodec::Unknown(99))
+            .format(SdpMediaFormat::new(SdpCodecIdentifier(99))
                 .attribute(SdpAttribute::RtpMap("h263-1998/90000".into()))
              )
     ];
@@ -91,9 +91,9 @@ a=rtpmap:99 h263-1998/90000\r\n".to_string();
     ];
     let medias = vec![
         SdpMedia::new(SdpMediaType::Audio, 49170, SdpProtocol::RtpAvp)
-            .format(SdpMediaFormat::new(SdpCodec::Pcmu)),
+            .format(SdpMediaFormat::new(SdpCodecIdentifier(0))),
         SdpMedia::new(SdpMediaType::Video, 51372, SdpProtocol::RtpAvp)
-            .format(SdpMediaFormat::new(SdpCodec::Unknown(99)/*H263v2*/)
+            .format(SdpMediaFormat::new(SdpCodecIdentifier(99))
                 .attribute(SdpAttribute::RtpMap("h263-1998/90000".into()))
              )
     ];

@@ -4,12 +4,12 @@ use crate::parse::ParserResult;
 use crate::parse::parse_u32;
 use crate::parse::slice_to_string;
 
-use crate::SdpCodec;
+use crate::SdpCodecIdentifier;
 use crate::SdpMedia;
 use crate::SdpAttribute;
 use crate::SdpMediaFormat;
 use crate::SdpAttributeType;
-use crate::parse_codec;
+use crate::parse_codec_identifier;
 use crate::parse_protocol;
 use crate::parse_attribute_type;
 use super::parse_media_type;
@@ -100,13 +100,13 @@ pub fn parse_attribute_list(input: &[u8]) -> ParserResult<(Vec<SdpAttribute>, Ve
      Ok((initial_data, (global, formats)))
 }
 
-named!(pub parse_attribute<(SdpAttributeType, Option<SdpCodec>, Option<String>)>, do_parse!(
+named!(pub parse_attribute<(SdpAttributeType, Option<SdpCodecIdentifier>, Option<String>)>, do_parse!(
     tag!("a=") >>
     ty: parse_attribute_type >>
     opt!(char!(':')) >>
     //port: map_res!(take_while!(is_digit), parse_u32) >>
     //port_count: opt!(parse_optional_port) >>
-    codec: opt!(parse_codec) >>
+    codec: opt!(parse_codec_identifier) >>
     opt!(char!(' ')) >>
     value: opt!(map_res!(take_until!("\r"), slice_to_string)) >>
     tag!("\r\n") >>
@@ -121,6 +121,6 @@ named!(pub parse_optional_port<u32>, do_parse!(
 
 named!(pub parse_initial_media_format<SdpMediaFormat>, do_parse!(
     opt!(char!(' ')) >>
-    codec: parse_codec >>
+    codec: parse_codec_identifier >>
     (SdpMediaFormat { codec: codec , connection: None, attributes: vec![] })
 ));
