@@ -3,7 +3,11 @@ name = "libsdp"
 version = "0.1.0"
 authors = ["Bytebuddha <pmg41494@protonmail.com>"]
 edition = "2018"
-
+readme = "Readme.md"
+keywords = ["voip", "sdp"]
+homepage = "https://github.com/Bytebuddha/libsdp"
+repository = "https://github.com/Bytebuddha/libsdp"
+description = "A slim sdp parsing library, with a focus towards voip user agents."
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
