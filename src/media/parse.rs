@@ -17,7 +17,7 @@ use super::parse_media_type;
 pub fn parse_media_lines(input: &[u8]) -> ParserResult<Vec<SdpMedia>> {
     let mut output = vec![];
     let mut data = input;
-    while let Ok((remains, media)) = parse_media(data.as_ref()) {
+    while let Ok((remains, media)) = parse_media(data) {
         output.push(media);
         data = remains;
     }
