@@ -23,11 +23,7 @@ a=SendRecv\r
         address: "200.57.7.196".into()
     };
 
-    let connection = SdpConnection {
-        network_type: SdpNetworkType::Internet,
-        address_type: SdpAddressType::Ipv4,
-        address: "200.57.7.196".into()
-    };
+    let connection = SdpConnection::new("200.57.7.196");
 
     let mut sdp_offer = SdpOffer::new(origin, "Clarent C5CM");
     let optional = vec![
@@ -38,26 +34,26 @@ a=SendRecv\r
     let attributes = vec![];
     let medias = vec![
         SdpMedia::new(SdpMediaType::Audio, 40376, SdpProtocol::RtpAvp)
-            .add_attribute(SdpAttribute::SendRecv)
-            .add_format(SdpMediaFormat::new(SdpCodec::Pcma)
-                    .add_attribute(SdpAttribute::RtpMap("PCMA/8000".into()))
+            .attribute(SdpAttribute::SendRecv)
+            .format(SdpMediaFormat::new(SdpCodec::Pcma)
+                    .attribute(SdpAttribute::RtpMap("PCMA/8000".into()))
             )
-            .add_format(SdpMediaFormat::new(SdpCodec::Unknown(18))
-                .add_attribute(SdpAttribute::RtpMap("G729/8000".into())))
-            .add_format(SdpMediaFormat::new(SdpCodec::G723)
-                .add_attribute(SdpAttribute::RtpMap("G723/8000".into())))
-            .add_format(SdpMediaFormat::new(SdpCodec::Pcmu)
-                    .add_attribute(SdpAttribute::RtpMap("PCMU/8000".into())))
+            .format(SdpMediaFormat::new(SdpCodec::Unknown(18))
+                .attribute(SdpAttribute::RtpMap("G729/8000".into())))
+            .format(SdpMediaFormat::new(SdpCodec::G723)
+                .attribute(SdpAttribute::RtpMap("G723/8000".into())))
+            .format(SdpMediaFormat::new(SdpCodec::Pcmu)
+                    .attribute(SdpAttribute::RtpMap("PCMU/8000".into())))
     ];
 
     for attr in optional {
-        sdp_offer = sdp_offer.add_optional_attribute(attr);
+        sdp_offer = sdp_offer.optional_attribute(attr);
     }
     for attr in attributes {
-        sdp_offer = sdp_offer.add_attribute(attr);
+        sdp_offer = sdp_offer.attribute(attr);
     }
     for media in medias {
-        sdp_offer = sdp_offer.add_media(media);
+        sdp_offer = sdp_offer.media(media);
     }
     let remains = vec![];
     assert_eq!(Ok((remains.as_ref(), sdp_offer)), parse_sdp_offer(data.as_ref()));
@@ -87,11 +83,7 @@ a=rtpmap:0 PCMU/8000\r
         address: "200.57.7.196".into()
     };
 
-    let connection = SdpConnection {
-        network_type: SdpNetworkType::Internet,
-        address_type: SdpAddressType::Ipv4,
-        address: "200.57.7.196".into()
-    };
+    let connection = SdpConnection::new("200.57.7.196");
 
     let mut sdp_offer = SdpOffer::new(origin, "Clarent C5CM");
     let optional = vec![
@@ -102,29 +94,29 @@ a=rtpmap:0 PCMU/8000\r
     let attributes = vec![];
     let medias = vec![
         SdpMedia::new(SdpMediaType::Audio, 40376, SdpProtocol::RtpAvp)
-              .add_attribute(SdpAttribute::SendRecv)
+              .attribute(SdpAttribute::SendRecv)
 
-              .add_format(SdpMediaFormat::new(SdpCodec::Pcma)
-                .add_attribute(SdpAttribute::RtpMap("PCMA/8000".into())))
+              .format(SdpMediaFormat::new(SdpCodec::Pcma)
+                .attribute(SdpAttribute::RtpMap("PCMA/8000".into())))
 
-              .add_format(SdpMediaFormat::new(SdpCodec::Unknown(18))
-                .add_attribute(SdpAttribute::RtpMap("G729/8000".into())))
+              .format(SdpMediaFormat::new(SdpCodec::Unknown(18))
+                .attribute(SdpAttribute::RtpMap("G729/8000".into())))
 
-            .add_format(SdpMediaFormat::new(SdpCodec::G723)
-              .add_attribute(SdpAttribute::RtpMap("G723/8000".into())))
+            .format(SdpMediaFormat::new(SdpCodec::G723)
+              .attribute(SdpAttribute::RtpMap("G723/8000".into())))
 
-            .add_format(SdpMediaFormat::new(SdpCodec::Pcmu)
-              .add_attribute(SdpAttribute::RtpMap("PCMU/8000".into())))
+            .format(SdpMediaFormat::new(SdpCodec::Pcmu)
+              .attribute(SdpAttribute::RtpMap("PCMU/8000".into())))
     ];
 
     for attr in optional {
-        sdp_offer = sdp_offer.add_optional_attribute(attr);
+        sdp_offer = sdp_offer.optional_attribute(attr);
     }
     for attr in attributes {
-        sdp_offer = sdp_offer.add_attribute(attr);
+        sdp_offer = sdp_offer.attribute(attr);
     }
     for media in medias {
-        sdp_offer = sdp_offer.add_media(media);
+        sdp_offer = sdp_offer.media(media);
     }
     assert_eq!(data, format!("{}", sdp_offer));
 }

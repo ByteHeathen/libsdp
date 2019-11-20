@@ -15,6 +15,17 @@ pub struct SdpConnection {
     pub address: String
 }
 
+impl SdpConnection {
+
+    pub fn new<S: Into<String>>(address: S) -> SdpConnection {
+        SdpConnection {
+            network_type: SdpNetworkType::Internet,
+            address_type: SdpAddressType::Ipv4,
+            address: address.into()
+        }
+    }
+}
+
 named!(pub parse_connection<SdpConnection>, do_parse!(
     network_type: parse_network_type >>
     char!(' ') >>

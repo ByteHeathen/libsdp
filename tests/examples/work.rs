@@ -35,11 +35,7 @@ a=fmtp:99 profile-level-id=3\r
         origin,
         name: SdpSessionName::new("Talk"),
         optional: vec![
-            SdpOptionalAttributes::Connection(SdpConnection {
-                network_type: SdpNetworkType::Internet,
-                address_type: SdpAddressType::Ipv4,
-                address: "10.1.10.120".into()
-            }),
+            SdpOptionalAttributes::Connection(SdpConnection::new("10.1.10.120")),
             SdpOptionalAttributes::Timing(SdpTiming::new(0, 0))
         ],
         attributes: vec![],
@@ -160,11 +156,7 @@ a=fmtp:99 profile-level-id=3\r
         origin,
         name: SdpSessionName::new("Talk"),
         optional: vec![
-            SdpOptionalAttributes::Connection(SdpConnection {
-                network_type: SdpNetworkType::Internet,
-                address_type: SdpAddressType::Ipv4,
-                address: "10.1.10.120".into()
-            }),
+            SdpOptionalAttributes::Connection(SdpConnection::new("10.1.10.120")),
             SdpOptionalAttributes::Timing(SdpTiming::new(0, 0))
         ],
         attributes: vec![],

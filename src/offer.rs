@@ -21,7 +21,6 @@ named!(pub parse_sdp_offer<SdpOffer>, do_parse!(
     attributes: parse_global_attributes >>
     media: parse_media_lines >>
     (SdpOffer { version, origin, name, optional, attributes, media })
-
 ));
 
 impl SdpOffer {
@@ -37,7 +36,7 @@ impl SdpOffer {
         }
     }
 
-    pub fn add_optional_attribute(mut self, attr: SdpOptionalAttributes) -> SdpOffer {
+    pub fn optional_attribute(mut self, attr: SdpOptionalAttributes) -> SdpOffer {
         self.optional.push(attr);
         self
     }
@@ -47,7 +46,7 @@ impl SdpOffer {
         self
     }
 
-    pub fn add_attribute(mut self, attr: SdpAttribute) -> SdpOffer {
+    pub fn attribute(mut self, attr: SdpAttribute) -> SdpOffer {
         self.attributes.push(attr);
         self
     }
@@ -57,13 +56,8 @@ impl SdpOffer {
         self
     }
 
-    pub fn add_media(mut self, media: SdpMedia) -> SdpOffer {
+    pub fn media(mut self, media: SdpMedia) -> SdpOffer {
         self.media.push(media);
-        self
-    }
-
-    pub fn media(mut self, media: Vec<SdpMedia>) -> SdpOffer {
-        self.media = media;
         self
     }
 

@@ -41,13 +41,28 @@ impl SdpMedia {
         }
     }
 
-    pub fn add_attribute(mut self, attr: SdpAttribute) -> SdpMedia {
+    pub fn attribute(mut self, attr: SdpAttribute) -> SdpMedia {
         self.attributes.push(attr);
         self
     }
 
-    pub fn add_format(mut self, attr: SdpMediaFormat) -> SdpMedia {
+    pub fn attributes(mut self, attrs: Vec<SdpAttribute>) -> SdpMedia {
+        self.attributes = attrs;
+        self
+    }
+
+    pub fn format(mut self, attr: SdpMediaFormat) -> SdpMedia {
         self.formats.push(attr);
+        self
+    }
+
+    pub fn protocol(mut self, proto: SdpProtocol) -> SdpMedia {
+        self.protocol = proto;
+        self
+    }
+
+    pub fn port_count(mut self, port_count: u32) -> SdpMedia {
+        self.port_count = Some(port_count);
         self
     }
 }

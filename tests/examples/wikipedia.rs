@@ -24,11 +24,7 @@ a=rtpmap:99 h263-1998/90000\r\n";
     };
     let remains: Vec<u8> = vec![];
     let mut sdp_offer = SdpOffer::new(origin, "SDP Seminar");
-    let connection = SdpConnection {
-        network_type: SdpNetworkType::Internet,
-        address_type: SdpAddressType::Ipv4,
-        address: "224.2.17.12/127".into()
-    };
+    let connection = SdpConnection::new("224.2.17.12/127");
     let optional = vec![
          SdpOptionalAttributes::Information("A Seminar on the session description protocol".into()),
          SdpOptionalAttributes::Uri("http://www.example.com/seminars/sdp.pdf".into()),
@@ -41,20 +37,20 @@ a=rtpmap:99 h263-1998/90000\r\n";
     ];
     let medias = vec![
         SdpMedia::new(SdpMediaType::Audio, 49170, SdpProtocol::RtpAvp)
-            .add_format(SdpMediaFormat::new(SdpCodec::Pcmu)),
+            .format(SdpMediaFormat::new(SdpCodec::Pcmu)),
         SdpMedia::new(SdpMediaType::Video, 51372, SdpProtocol::RtpAvp)
-            .add_format(SdpMediaFormat::new(SdpCodec::Unknown(99))
-                .add_attribute(SdpAttribute::RtpMap("h263-1998/90000".into()))
+            .format(SdpMediaFormat::new(SdpCodec::Unknown(99))
+                .attribute(SdpAttribute::RtpMap("h263-1998/90000".into()))
              )
     ];
     for attr in optional {
-        sdp_offer = sdp_offer.add_optional_attribute(attr);
+        sdp_offer = sdp_offer.optional_attribute(attr);
     }
     for attr in attributes {
-        sdp_offer = sdp_offer.add_attribute(attr);
+        sdp_offer = sdp_offer.attribute(attr);
     }
     for media in medias {
-        sdp_offer = sdp_offer.add_media(media);
+        sdp_offer = sdp_offer.media(media);
     }
     assert_eq!(Ok((remains.as_ref(), sdp_offer)), parse_sdp_offer(data.as_ref()));
 }
@@ -82,11 +78,7 @@ a=rtpmap:99 h263-1998/90000\r\n".to_string();
         address: "10.47.16.5".into()
     };
     let mut sdp_offer = SdpOffer::new(origin, "SDP Seminar");
-    let connection = SdpConnection {
-        network_type: SdpNetworkType::Internet,
-        address_type: SdpAddressType::Ipv4,
-        address: "224.2.17.12/127".into()
-    };
+    let connection = SdpConnection::new("224.2.17.12/127");
     let optional = vec![
          SdpOptionalAttributes::Information("A Seminar on the session description protocol".into()),
          SdpOptionalAttributes::Uri("http://www.example.com/seminars/sdp.pdf".into()),
@@ -99,20 +91,20 @@ a=rtpmap:99 h263-1998/90000\r\n".to_string();
     ];
     let medias = vec![
         SdpMedia::new(SdpMediaType::Audio, 49170, SdpProtocol::RtpAvp)
-            .add_format(SdpMediaFormat::new(SdpCodec::Pcmu)),
+            .format(SdpMediaFormat::new(SdpCodec::Pcmu)),
         SdpMedia::new(SdpMediaType::Video, 51372, SdpProtocol::RtpAvp)
-            .add_format(SdpMediaFormat::new(SdpCodec::Unknown(99)/*H263v2*/)
-                .add_attribute(SdpAttribute::RtpMap("h263-1998/90000".into()))
+            .format(SdpMediaFormat::new(SdpCodec::Unknown(99)/*H263v2*/)
+                .attribute(SdpAttribute::RtpMap("h263-1998/90000".into()))
              )
     ];
     for attr in optional {
-        sdp_offer = sdp_offer.add_optional_attribute(attr);
+        sdp_offer = sdp_offer.optional_attribute(attr);
     }
     for attr in attributes {
-        sdp_offer = sdp_offer.add_attribute(attr);
+        sdp_offer = sdp_offer.attribute(attr);
     }
     for media in medias {
-        sdp_offer = sdp_offer.add_media(media);
+        sdp_offer = sdp_offer.media(media);
     }
     assert_eq!(data, format!("{}", sdp_offer));
 }

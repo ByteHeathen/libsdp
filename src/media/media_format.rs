@@ -19,12 +19,12 @@ impl SdpMediaFormat {
         }
     }
 
-    pub fn add_connection(mut self, conn: SdpConnection) -> SdpMediaFormat {
+    pub fn connection(mut self, conn: SdpConnection) -> SdpMediaFormat {
         self.connection = Some(conn);
         self
     }
 
-    pub fn add_attribute(mut self, attr: SdpAttribute) -> SdpMediaFormat {
+    pub fn attribute(mut self, attr: SdpAttribute) -> SdpMediaFormat {
         self.attributes.push(attr);
         self
     }
