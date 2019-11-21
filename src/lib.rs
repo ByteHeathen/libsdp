@@ -30,7 +30,6 @@ pub use self::attributes::parse_attribute_type;
 pub use self::attributes::parse_global_attribute;
 pub use self::attributes::parse_global_attributes;
 
-
 mod media;
 pub use self::media::SdpMedia;
 pub use self::media::SdpMediaType;

@@ -3,7 +3,7 @@ use crate::parse::slice_to_string;
 use std::fmt;
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct SdpSessionName(String);
+pub struct SdpSessionName(pub String);
 
 named!(pub parse_session_name<SdpSessionName>, do_parse!(
     data: map_res!(take_until!("\r"), slice_to_string) >>

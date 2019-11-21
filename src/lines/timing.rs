@@ -6,7 +6,7 @@ use crate::attributes::SdpOptionalAttributes;
 use std::fmt;
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct SdpTiming(u64, u64);
+pub struct SdpTiming(pub u64, pub u64);
 
 named!(pub parse_timing<SdpTiming>, do_parse!(
     start: map_res!(take_while!(is_digit), parse_u64) >>
