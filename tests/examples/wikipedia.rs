@@ -38,9 +38,9 @@ a=rtpmap:99 h263-1998/90000\r\n";
         SdpAttribute::RecvOnly
     ];
     let medias = vec![
-        SdpMedia::new(SdpMediaType::Audio, 49170, SdpProtocol::RtpAvp)
+        SdpMedia::new(SdpMediaType::Audio, 49170, SdpTransport::RtpAvp)
             .format(SdpMediaFormat::new(SdpCodecIdentifier(0))),
-        SdpMedia::new(SdpMediaType::Video, 51372, SdpProtocol::RtpAvp)
+        SdpMedia::new(SdpMediaType::Video, 51372, SdpTransport::RtpAvp)
             .format(SdpMediaFormat::new(SdpCodecIdentifier(99))
                 .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("h263-1998".into()), 90000)))
              )
@@ -92,9 +92,9 @@ a=rtpmap:99 h263-1998/90000\r\n".to_string();
         SdpAttribute::RecvOnly
     ];
     let medias = vec![
-        SdpMedia::new(SdpMediaType::Audio, 49170, SdpProtocol::RtpAvp)
+        SdpMedia::new(SdpMediaType::Audio, 49170, SdpTransport::RtpAvp)
             .format(SdpMediaFormat::new(SdpCodecIdentifier(0))),
-        SdpMedia::new(SdpMediaType::Video, 51372, SdpProtocol::RtpAvp)
+        SdpMedia::new(SdpMediaType::Video, 51372, SdpTransport::RtpAvp)
             .format(SdpMediaFormat::new(SdpCodecIdentifier(99))
                 .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("h263-1998".into()), 90000)))
              )

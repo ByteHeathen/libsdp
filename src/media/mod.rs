@@ -1,4 +1,4 @@
-use crate::SdpProtocol;
+use crate::SdpTransport;
 use crate::SdpAttribute;
 
 mod media_format;
@@ -27,14 +27,14 @@ pub struct SdpMedia {
     pub media: SdpMediaType,
     pub port: u32,
     pub port_count: Option<u32>,
-    pub protocol: SdpProtocol,
+    pub protocol: SdpTransport,
     pub attributes: Vec<SdpAttribute>,
     pub formats: Vec<SdpMediaFormat>
 }
 
 impl SdpMedia {
 
-    pub fn new(media: SdpMediaType, port: u32, protocol: SdpProtocol) -> SdpMedia {
+    pub fn new(media: SdpMediaType, port: u32, protocol: SdpTransport) -> SdpMedia {
         SdpMedia {
             media,
             port,
@@ -60,7 +60,7 @@ impl SdpMedia {
         self
     }
 
-    pub fn protocol(mut self, proto: SdpProtocol) -> SdpMedia {
+    pub fn protocol(mut self, proto: SdpTransport) -> SdpMedia {
         self.protocol = proto;
         self
     }

@@ -15,6 +15,6 @@ pub use self::bandwidth::SdpBandwidth;
 pub use self::bandwidth::parse_bandwidth_line;
 pub use self::bandwidth::parse_bandwidth;
 
-mod protocol;
-pub use self::protocol::SdpProtocol;
-pub use self::protocol::parse_protocol;
+mod transport;
+pub use self::transport::SdpTransport;
+pub use self::transport::parse_transport;

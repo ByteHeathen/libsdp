@@ -10,7 +10,7 @@ use crate::SdpAttribute;
 use crate::SdpMediaFormat;
 use crate::SdpAttributeType;
 use crate::parse_codec_identifier;
-use crate::parse_protocol;
+use crate::parse_transport;
 use crate::parse_attribute_type;
 use super::parse_media_type;
 use crate::attributes::parse_rtpmap;
@@ -33,7 +33,7 @@ named!(pub parse_media<SdpMedia>, do_parse!(
     port: map_res!(take_while!(is_digit), parse_u32) >>
     port_count: opt!(parse_optional_port) >>
     char!(' ') >>
-    protocol: parse_protocol >>
+    protocol: parse_transport >>
     char!(' ') >>
     formats: parse_attribute_list >>
     (SdpMedia { media: media.1, port, port_count, protocol, attributes: formats.0, formats: formats.1 })

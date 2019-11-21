@@ -45,7 +45,7 @@ a=fmtp:99 profile-level-id=3\r
                 media: SdpMediaType::Audio,
                 port: 7078,
                 port_count: None,
-                protocol: SdpProtocol::RtpAvp,
+                protocol: SdpTransport::RtpAvp,
                 attributes: vec![],
                 formats: vec![
                     SdpMediaFormat {
@@ -96,7 +96,7 @@ a=fmtp:99 profile-level-id=3\r
                 media: SdpMediaType::Video,
                 port: 9078,
                 port_count: None,
-                protocol: SdpProtocol::RtpAvp,
+                protocol: SdpTransport::RtpAvp,
                 attributes: vec![],
                 formats: vec![
                     SdpMediaFormat {
@@ -166,7 +166,7 @@ a=fmtp:99 profile-level-id=3\r
                 media: SdpMediaType::Audio,
                 port: 7078,
                 port_count: None,
-                protocol: SdpProtocol::RtpAvp,
+                protocol: SdpTransport::RtpAvp,
                 attributes: vec![],
                 formats: vec![
                     SdpMediaFormat {
@@ -217,7 +217,7 @@ a=fmtp:99 profile-level-id=3\r
                 media: SdpMediaType::Video,
                 port: 9078,
                 port_count: None,
-                protocol: SdpProtocol::RtpAvp,
+                protocol: SdpTransport::RtpAvp,
                 attributes: vec![],
                 formats: vec![
                     SdpMediaFormat {

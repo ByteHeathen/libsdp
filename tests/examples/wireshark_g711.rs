@@ -34,7 +34,7 @@ a=SendRecv\r
 
     let attributes = vec![];
     let medias = vec![
-        SdpMedia::new(SdpMediaType::Audio, 40376, SdpProtocol::RtpAvp)
+        SdpMedia::new(SdpMediaType::Audio, 40376, SdpTransport::RtpAvp)
             .attribute(SdpAttribute::SendRecv)
             .format(SdpMediaFormat::new(SdpCodecIdentifier(8))
                     .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Pcma, 8000)))
@@ -94,7 +94,7 @@ a=rtpmap:0 PCMU/8000\r
 
     let attributes = vec![];
     let medias = vec![
-        SdpMedia::new(SdpMediaType::Audio, 40376, SdpProtocol::RtpAvp)
+        SdpMedia::new(SdpMediaType::Audio, 40376, SdpTransport::RtpAvp)
               .attribute(SdpAttribute::SendRecv)
 
               .format(SdpMediaFormat::new(SdpCodecIdentifier(8))

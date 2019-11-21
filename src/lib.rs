@@ -48,8 +48,8 @@ pub use self::core::parse_codec_identifier;
 pub use self::core::SdpBandwidth;
 pub use self::core::parse_bandwidth_line;
 pub use self::core::parse_bandwidth;
-pub use self::core::SdpProtocol;
-pub use self::core::parse_protocol;
+pub use self::core::SdpTransport;
+pub use self::core::parse_transport;
 
 mod offer;
 pub use self::offer::SdpOffer;
