@@ -16,6 +16,10 @@ pub use self::parse::parse_optional_port;
 pub use self::parse::parse_attribute_list;
 pub use self::parse::parse_initial_media_format;
 
+mod encoding;
+pub use self::encoding::SdpEncoding;
+pub use self::encoding::parse_encoding;
+
 use std::fmt;
 
 #[derive(Debug, PartialEq, Clone)]

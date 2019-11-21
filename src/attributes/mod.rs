@@ -11,12 +11,16 @@ pub use self::optional::parse_optional_attributes;
 
 use std::fmt;
 
+mod rtpmap;
+pub use self::rtpmap::RtpMap;
+pub use self::rtpmap::parse_rtpmap;
+
 #[derive(Debug, PartialEq, Clone)]
 pub enum SdpAttribute {
     SendOnly,
     RecvOnly,
     SendRecv,
-    RtpMap(String),
+    RtpMap(RtpMap),
     Fmtp(String)
 }
 
@@ -30,7 +34,7 @@ named!(pub parse_global_attribute<SdpAttribute>, alt!(
 
 named!(pub parse_rtpmap_attribute<SdpAttribute>, do_parse!(
     tag!("a=rtpmap ") >>
-    data: map_res!(take_until!("\r"), slice_to_string) >>
+    data: parse_rtpmap >>
     (SdpAttribute::RtpMap(data))
 ));
 

@@ -1,4 +1,5 @@
 use libsdp::*;
+use libsdp::attributes::RtpMap;
 
 #[test]
 fn parse() {
@@ -51,7 +52,7 @@ a=fmtp:99 profile-level-id=3\r
                         codec: SdpCodecIdentifier(124),
                         connection: None,
                         attributes: vec![
-                            SdpAttribute::RtpMap("opus/48000".into()),
+                            SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("opus".into()), 48000)),
                             SdpAttribute::Fmtp("useinbandfec=1; usedtx=1".into())
                         ]
                     },
@@ -59,7 +60,7 @@ a=fmtp:99 profile-level-id=3\r
                         codec: SdpCodecIdentifier(111),
                         connection: None,
                         attributes: vec![
-                            SdpAttribute::RtpMap("speex/16000".into()),
+                            SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("speex".into()), 16000)),
                             SdpAttribute::Fmtp("vbr=on".into())
                         ]
                     },
@@ -67,7 +68,7 @@ a=fmtp:99 profile-level-id=3\r
                         codec: SdpCodecIdentifier(110),
                         connection: None,
                         attributes: vec![
-                            SdpAttribute::RtpMap("speex/8000".into()),
+                            SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("speex".into()), 8000)),
                             SdpAttribute::Fmtp("vbr=on".into())
                         ]
                     },
@@ -85,7 +86,7 @@ a=fmtp:99 profile-level-id=3\r
                         codec: SdpCodecIdentifier(101),
                         connection: None,
                         attributes: vec![
-                            SdpAttribute::RtpMap("telephone-event/8000".into()),
+                            SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("telephone-event".into()), 8000)),
                             SdpAttribute::Fmtp("0-11".into())
                         ]
                     }
@@ -102,14 +103,14 @@ a=fmtp:99 profile-level-id=3\r
                         codec: SdpCodecIdentifier(103),
                         connection: None,
                         attributes: vec![
-                            SdpAttribute::RtpMap("VP8/90000".into())
+                            SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("VP8".into()), 90000))
                         ]
                     },
                     SdpMediaFormat {
                         codec: SdpCodecIdentifier(99),
                         connection: None,
                         attributes: vec![
-                            SdpAttribute::RtpMap("MP4V-ES/90000".into()),
+                            SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("MP4V-ES".into()), 90000)),
                             SdpAttribute::Fmtp("profile-level-id=3".into())
                         ]
                     }
@@ -172,7 +173,7 @@ a=fmtp:99 profile-level-id=3\r
                         codec: SdpCodecIdentifier(124),
                         connection: None,
                         attributes: vec![
-                            SdpAttribute::RtpMap("opus/48000".into()),
+                            SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("opus".into()), 48000)),
                             SdpAttribute::Fmtp("useinbandfec=1; usedtx=1".into())
                         ]
                     },
@@ -180,7 +181,7 @@ a=fmtp:99 profile-level-id=3\r
                         codec: SdpCodecIdentifier(111),
                         connection: None,
                         attributes: vec![
-                            SdpAttribute::RtpMap("speex/16000".into()),
+                            SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("speex".into()), 16000)),
                             SdpAttribute::Fmtp("vbr=on".into()),
                         ]
                     },
@@ -188,7 +189,7 @@ a=fmtp:99 profile-level-id=3\r
                         codec: SdpCodecIdentifier(110),
                         connection: None,
                         attributes: vec![
-                            SdpAttribute::RtpMap("speex/8000".into()),
+                            SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("speex".into()), 8000)),
                             SdpAttribute::Fmtp("vbr=on".into())
                         ]
                     },
@@ -206,7 +207,7 @@ a=fmtp:99 profile-level-id=3\r
                         codec: SdpCodecIdentifier(101),
                         connection: None,
                         attributes: vec![
-                            SdpAttribute::RtpMap("telephone-event/8000".into()),
+                            SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("telephone-event".into()), 8000)),
                             SdpAttribute::Fmtp("0-11".into()),
                         ]
                     }
@@ -223,14 +224,14 @@ a=fmtp:99 profile-level-id=3\r
                         codec: SdpCodecIdentifier(103),
                         connection: None,
                         attributes: vec![
-                            SdpAttribute::RtpMap("VP8/90000".into())
+                            SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("VP8".into()), 90000))
                         ]
                     },
                     SdpMediaFormat {
                         codec: SdpCodecIdentifier(99),
                         connection: None,
                         attributes: vec![
-                            SdpAttribute::RtpMap("MP4V-ES/90000".into()),
+                            SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("MP4V-ES".into()), 90000)),
                             SdpAttribute::Fmtp("profile-level-id=3".into()),
                         ]
                     }

@@ -13,6 +13,7 @@ use crate::parse_codec_identifier;
 use crate::parse_protocol;
 use crate::parse_attribute_type;
 use super::parse_media_type;
+use crate::attributes::parse_rtpmap;
 
 pub fn parse_media_lines(input: &[u8]) -> ParserResult<Vec<SdpMedia>> {
     let mut output = vec![];
@@ -58,7 +59,10 @@ pub fn parse_attribute_list(input: &[u8]) -> ParserResult<(Vec<SdpAttribute>, Ve
                     match ty {
                         SdpAttributeType::Rtpmap => {
                             if let Some(value) = value {
-                                media_format.attributes.push(SdpAttribute::RtpMap(value));
+                                let value = format!("{} ", value);
+                                if let Ok((_, rtpmap)) = parse_rtpmap(value.as_ref()) {
+                                    media_format.attributes.push(SdpAttribute::RtpMap(rtpmap));
+                                }
                             }
                         },
                         SdpAttributeType::Fmtp => {
@@ -83,7 +87,9 @@ pub fn parse_attribute_list(input: &[u8]) -> ParserResult<(Vec<SdpAttribute>, Ve
             match ty {
                 SdpAttributeType::Rtpmap => {
                     if let Some(value) = value {
-                        global.push(SdpAttribute::RtpMap(value))
+                        if let Ok((_, rtpmap)) = parse_rtpmap(value.as_ref()) {
+                            global.push(SdpAttribute::RtpMap(rtpmap))
+                        }
                     }
                 },
                 SdpAttributeType::Fmtp => {

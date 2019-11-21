@@ -22,7 +22,7 @@ pub use self::lines::parse_email_line;
 pub use self::lines::parse_uri_line;
 pub use self::lines::parse_information_line;
 
-mod attributes;
+pub mod attributes;
 pub use self::attributes::SdpAttribute;
 pub use self::attributes::SdpAttributeType;
 pub use self::attributes::SdpOptionalAttributes;
@@ -35,6 +35,7 @@ mod media;
 pub use self::media::SdpMedia;
 pub use self::media::SdpMediaType;
 pub use self::media::SdpMediaFormat;
+pub use self::media::SdpEncoding;
 pub use self::media::parse_media;
 pub use self::media::parse_media_lines;
 

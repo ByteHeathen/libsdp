@@ -1,4 +1,5 @@
 use libsdp::*;
+use libsdp::attributes::RtpMap;
 
 #[test]
 fn parse() {
@@ -36,14 +37,14 @@ a=SendRecv\r
         SdpMedia::new(SdpMediaType::Audio, 40376, SdpProtocol::RtpAvp)
             .attribute(SdpAttribute::SendRecv)
             .format(SdpMediaFormat::new(SdpCodecIdentifier(8))
-                    .attribute(SdpAttribute::RtpMap("PCMA/8000".into()))
+                    .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Pcma, 8000)))
             )
             .format(SdpMediaFormat::new(SdpCodecIdentifier(18))
-                .attribute(SdpAttribute::RtpMap("G729/8000".into())))
+                .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("G729".into()), 8000))))
             .format(SdpMediaFormat::new(SdpCodecIdentifier(4))
-                .attribute(SdpAttribute::RtpMap("G723/8000".into())))
+                .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("G723".into()), 8000))))
             .format(SdpMediaFormat::new(SdpCodecIdentifier(0))
-                    .attribute(SdpAttribute::RtpMap("PCMU/8000".into())))
+                    .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Pcmu, 8000))))
     ];
 
     for attr in optional {
@@ -97,16 +98,16 @@ a=rtpmap:0 PCMU/8000\r
               .attribute(SdpAttribute::SendRecv)
 
               .format(SdpMediaFormat::new(SdpCodecIdentifier(8))
-                .attribute(SdpAttribute::RtpMap("PCMA/8000".into())))
+                .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Pcma, 8000))))
 
               .format(SdpMediaFormat::new(SdpCodecIdentifier(18))
-                .attribute(SdpAttribute::RtpMap("G729/8000".into())))
+                .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("G729".into()), 8000))))
 
             .format(SdpMediaFormat::new(SdpCodecIdentifier(4))
-              .attribute(SdpAttribute::RtpMap("G723/8000".into())))
+              .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("G723".into()), 8000))))
 
             .format(SdpMediaFormat::new(SdpCodecIdentifier(0))
-              .attribute(SdpAttribute::RtpMap("PCMU/8000".into())))
+              .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Pcmu, 8000))))
     ];
 
     for attr in optional {

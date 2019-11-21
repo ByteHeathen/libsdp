@@ -1,4 +1,6 @@
 use libsdp::*;
+use libsdp::attributes::RtpMap;
+use libsdp::SdpEncoding;
 
 #[test]
 fn parse() {
@@ -40,7 +42,7 @@ a=rtpmap:99 h263-1998/90000\r\n";
             .format(SdpMediaFormat::new(SdpCodecIdentifier(0))),
         SdpMedia::new(SdpMediaType::Video, 51372, SdpProtocol::RtpAvp)
             .format(SdpMediaFormat::new(SdpCodecIdentifier(99))
-                .attribute(SdpAttribute::RtpMap("h263-1998/90000".into()))
+                .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("h263-1998".into()), 90000)))
              )
     ];
     for attr in optional {
@@ -94,7 +96,7 @@ a=rtpmap:99 h263-1998/90000\r\n".to_string();
             .format(SdpMediaFormat::new(SdpCodecIdentifier(0))),
         SdpMedia::new(SdpMediaType::Video, 51372, SdpProtocol::RtpAvp)
             .format(SdpMediaFormat::new(SdpCodecIdentifier(99))
-                .attribute(SdpAttribute::RtpMap("h263-1998/90000".into()))
+                .attribute(SdpAttribute::RtpMap(RtpMap::new(SdpEncoding::Unknown("h263-1998".into()), 90000)))
              )
     ];
     for attr in optional {
