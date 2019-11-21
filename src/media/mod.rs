@@ -27,19 +27,19 @@ pub struct SdpMedia {
     pub media: SdpMediaType,
     pub port: u32,
     pub port_count: Option<u32>,
-    pub protocol: SdpTransport,
+    pub transport: SdpTransport,
     pub attributes: Vec<SdpAttribute>,
     pub formats: Vec<SdpMediaFormat>
 }
 
 impl SdpMedia {
 
-    pub fn new(media: SdpMediaType, port: u32, protocol: SdpTransport) -> SdpMedia {
+    pub fn new(media: SdpMediaType, port: u32, transport: SdpTransport) -> SdpMedia {
         SdpMedia {
             media,
             port,
             port_count: None,
-            protocol,
+            transport,
             attributes: vec![],
             formats: vec![]
         }
@@ -60,8 +60,8 @@ impl SdpMedia {
         self
     }
 
-    pub fn protocol(mut self, proto: SdpTransport) -> SdpMedia {
-        self.protocol = proto;
+    pub fn transport(mut self, trans: SdpTransport) -> SdpMedia {
+        self.transport = trans;
         self
     }
 
@@ -74,9 +74,9 @@ impl SdpMedia {
 impl fmt::Display for SdpMedia {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(port_count) = self.port_count {
-            write!(f, "{} {}/{} {}", self.media, self.port, port_count, self.protocol)?;
+            write!(f, "{} {}/{} {}", self.media, self.port, port_count, self.transport)?;
         } else {
-            write!(f, "{} {} {}", self.media, self.port, self.protocol)?;
+            write!(f, "{} {} {}", self.media, self.port, self.transport)?;
         }
         for format in &self.formats {
             write!(f, " {}", format.codec)?;

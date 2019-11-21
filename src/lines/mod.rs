@@ -23,34 +23,34 @@ pub use self::connection::SdpConnection;
 pub use self::connection::parse_connection;
 pub use self::connection::parse_connection_name;
 
-use crate::SdpOptionalAttributes;
+use crate::SdpOptionalAttribute;
 
 use crate::parse::slice_to_string;
 
-named!(pub parse_email_line<SdpOptionalAttributes>, do_parse!(
+named!(pub parse_email_line<SdpOptionalAttribute>, do_parse!(
     tag!("e=") >>
     output: map_res!(take_until!("\r"), slice_to_string) >>
     tag!("\r\n") >>
-    (SdpOptionalAttributes::Email(output))
+    (SdpOptionalAttribute::Email(output))
 ));
 
-named!(pub parse_phone_line<SdpOptionalAttributes>, do_parse!(
+named!(pub parse_phone_line<SdpOptionalAttribute>, do_parse!(
     tag!("e=") >>
     output: map_res!(take_until!("\r"), slice_to_string) >>
     tag!("\r\n") >>
-    (SdpOptionalAttributes::Phone(output))
+    (SdpOptionalAttribute::Phone(output))
 ));
 
-named!(pub parse_information_line<SdpOptionalAttributes>, do_parse!(
+named!(pub parse_information_line<SdpOptionalAttribute>, do_parse!(
     tag!("i=") >>
     output: map_res!(take_until!("\r"), slice_to_string) >>
     tag!("\r\n") >>
-    (SdpOptionalAttributes::Information(output))
+    (SdpOptionalAttribute::Information(output))
 ));
 
-named!(pub parse_uri_line<SdpOptionalAttributes>, do_parse!(
+named!(pub parse_uri_line<SdpOptionalAttribute>, do_parse!(
     tag!("u=") >>
     output: map_res!(take_until!("\r"), slice_to_string) >>
     tag!("\r\n") >>
-    (SdpOptionalAttributes::Uri(output))
+    (SdpOptionalAttribute::Uri(output))
 ));

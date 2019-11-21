@@ -6,7 +6,7 @@ pub use self::ty::SdpAttributeType;
 pub use self::ty::parse_attribute_type;
 
 mod optional;
-pub use self::optional::SdpOptionalAttributes;
+pub use self::optional::SdpOptionalAttribute;
 pub use self::optional::parse_optional_attributes;
 
 use std::fmt;

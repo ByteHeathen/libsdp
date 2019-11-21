@@ -28,11 +28,11 @@ a=rtpmap:99 h263-1998/90000\r\n";
     let mut sdp_offer = SdpOffer::new(origin, "SDP Seminar");
     let connection = SdpConnection::new("224.2.17.12/127");
     let optional = vec![
-         SdpOptionalAttributes::Information("A Seminar on the session description protocol".into()),
-         SdpOptionalAttributes::Uri("http://www.example.com/seminars/sdp.pdf".into()),
-         SdpOptionalAttributes::Email("j.doe@example.com (Jane Doe)".into()),
-         SdpOptionalAttributes::Connection(connection),
-         SdpOptionalAttributes::Timing(SdpTiming::new(2873397496, 2873404696))
+         SdpOptionalAttribute::Information("A Seminar on the session description protocol".into()),
+         SdpOptionalAttribute::Uri("http://www.example.com/seminars/sdp.pdf".into()),
+         SdpOptionalAttribute::Email("j.doe@example.com (Jane Doe)".into()),
+         SdpOptionalAttribute::Connection(connection),
+         SdpOptionalAttribute::Timing(SdpTiming::new(2873397496, 2873404696))
     ];
     let attributes = vec![
         SdpAttribute::RecvOnly
@@ -82,11 +82,11 @@ a=rtpmap:99 h263-1998/90000\r\n".to_string();
     let mut sdp_offer = SdpOffer::new(origin, "SDP Seminar");
     let connection = SdpConnection::new("224.2.17.12/127");
     let optional = vec![
-         SdpOptionalAttributes::Information("A Seminar on the session description protocol".into()),
-         SdpOptionalAttributes::Uri("http://www.example.com/seminars/sdp.pdf".into()),
-         SdpOptionalAttributes::Email("j.doe@example.com (Jane Doe)".into()),
-         SdpOptionalAttributes::Connection(connection),
-         SdpOptionalAttributes::Timing(SdpTiming::new(2873397496, 2873404696))
+         SdpOptionalAttribute::Information("A Seminar on the session description protocol".into()),
+         SdpOptionalAttribute::Uri("http://www.example.com/seminars/sdp.pdf".into()),
+         SdpOptionalAttribute::Email("j.doe@example.com (Jane Doe)".into()),
+         SdpOptionalAttribute::Connection(connection),
+         SdpOptionalAttribute::Timing(SdpTiming::new(2873397496, 2873404696))
     ];
     let attributes = vec![
         SdpAttribute::RecvOnly

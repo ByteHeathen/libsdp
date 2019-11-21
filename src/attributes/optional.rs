@@ -13,7 +13,7 @@ use crate::SdpBandwidth;
 use std::fmt;
 
 #[derive(Debug, PartialEq, Clone)]
-pub enum SdpOptionalAttributes {
+pub enum SdpOptionalAttribute {
     Connection(SdpConnection),
     Email(String),
     Phone(String),
@@ -23,22 +23,22 @@ pub enum SdpOptionalAttributes {
     Uri(String)
 }
 
-impl fmt::Display for SdpOptionalAttributes {
+impl fmt::Display for SdpOptionalAttribute {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            SdpOptionalAttributes::Connection(conn) => write!(f, "c={}", conn),
-            SdpOptionalAttributes::Email(email) => write!(f, "e={}", email),
-            SdpOptionalAttributes::Phone(phone) => write!(f, "p={}", phone),
-            SdpOptionalAttributes::Information(information) => write!(f, "i={}", information),
-            SdpOptionalAttributes::Bandwidth(bandwidth) => write!(f, "b={}", bandwidth),
-            SdpOptionalAttributes::Timing(timing) => write!(f, "t={}", timing),
-            SdpOptionalAttributes::Uri(uri) => write!(f, "u={}", uri),
+            SdpOptionalAttribute::Connection(conn) => write!(f, "c={}", conn),
+            SdpOptionalAttribute::Email(email) => write!(f, "e={}", email),
+            SdpOptionalAttribute::Phone(phone) => write!(f, "p={}", phone),
+            SdpOptionalAttribute::Information(information) => write!(f, "i={}", information),
+            SdpOptionalAttribute::Bandwidth(bandwidth) => write!(f, "b={}", bandwidth),
+            SdpOptionalAttribute::Timing(timing) => write!(f, "t={}", timing),
+            SdpOptionalAttribute::Uri(uri) => write!(f, "u={}", uri),
         }
     }
 }
 
 
-named!(pub parse_optional_sdp_attribute<SdpOptionalAttributes>, alt!(
+named!(pub parse_optional_sdp_attribute<SdpOptionalAttribute>, alt!(
     parse_uri_line |
     parse_time_line |
     parse_bandwidth_line |
@@ -48,7 +48,7 @@ named!(pub parse_optional_sdp_attribute<SdpOptionalAttributes>, alt!(
     parse_information_line
 ));
 
-pub fn parse_optional_attributes(input: &[u8]) -> ParserResult<Vec<SdpOptionalAttributes>> {
+pub fn parse_optional_attributes(input: &[u8]) -> ParserResult<Vec<SdpOptionalAttribute>> {
     let mut output = vec![];
     let mut data = input;
     while let Ok((remains, attribute)) = parse_optional_sdp_attribute(data) {

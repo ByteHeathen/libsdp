@@ -33,10 +33,10 @@ named!(pub parse_media<SdpMedia>, do_parse!(
     port: map_res!(take_while!(is_digit), parse_u32) >>
     port_count: opt!(parse_optional_port) >>
     char!(' ') >>
-    protocol: parse_transport >>
+    transport: parse_transport >>
     char!(' ') >>
     formats: parse_attribute_list >>
-    (SdpMedia { media: media.1, port, port_count, protocol, attributes: formats.0, formats: formats.1 })
+    (SdpMedia { media: media.1, port, port_count, transport, attributes: formats.0, formats: formats.1 })
 ));
 
 pub fn parse_attribute_list(input: &[u8]) -> ParserResult<(Vec<SdpAttribute>, Vec<SdpMediaFormat>)> {

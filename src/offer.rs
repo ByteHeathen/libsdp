@@ -8,7 +8,7 @@ pub struct SdpOffer {
     pub version: SdpVersion,
     pub origin: SdpOrigin,
     pub name: SdpSessionName,
-    pub optional: Vec<SdpOptionalAttributes>,
+    pub optional: Vec<SdpOptionalAttribute>,
     pub attributes: Vec<SdpAttribute>,
     pub media: Vec<SdpMedia>
 }
@@ -36,12 +36,12 @@ impl SdpOffer {
         }
     }
 
-    pub fn optional_attribute(mut self, attr: SdpOptionalAttributes) -> SdpOffer {
+    pub fn optional_attribute(mut self, attr: SdpOptionalAttribute) -> SdpOffer {
         self.optional.push(attr);
         self
     }
 
-    pub fn optional_attributes(mut self, attr: Vec<SdpOptionalAttributes>) -> SdpOffer {
+    pub fn optional_attributes(mut self, attr: Vec<SdpOptionalAttribute>) -> SdpOffer {
         self.optional = attr;
         self
     }
@@ -63,7 +63,7 @@ impl SdpOffer {
 
     pub fn get_connection(&self) -> Option<SdpConnection> {
         for thing in &self.optional {
-            if let SdpOptionalAttributes::Connection(conn) = thing {
+            if let SdpOptionalAttribute::Connection(conn) = thing {
                 return Some(conn.clone());
             }
         }

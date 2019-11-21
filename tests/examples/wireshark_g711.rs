@@ -28,8 +28,8 @@ a=SendRecv\r
 
     let mut sdp_offer = SdpOffer::new(origin, "Clarent C5CM");
     let optional = vec![
-         SdpOptionalAttributes::Connection(connection),
-         SdpOptionalAttributes::Timing(SdpTiming::new(0, 0)),
+         SdpOptionalAttribute::Connection(connection),
+         SdpOptionalAttribute::Timing(SdpTiming::new(0, 0)),
     ];
 
     let attributes = vec![];
@@ -88,8 +88,8 @@ a=rtpmap:0 PCMU/8000\r
 
     let mut sdp_offer = SdpOffer::new(origin, "Clarent C5CM");
     let optional = vec![
-         SdpOptionalAttributes::Connection(connection),
-         SdpOptionalAttributes::Timing(SdpTiming::new(0, 0)),
+         SdpOptionalAttribute::Connection(connection),
+         SdpOptionalAttribute::Timing(SdpTiming::new(0, 0)),
     ];
 
     let attributes = vec![];

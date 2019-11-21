@@ -25,7 +25,7 @@ pub use self::lines::parse_information_line;
 pub mod attributes;
 pub use self::attributes::SdpAttribute;
 pub use self::attributes::SdpAttributeType;
-pub use self::attributes::SdpOptionalAttributes;
+pub use self::attributes::SdpOptionalAttribute;
 pub use self::attributes::parse_attribute_type;
 pub use self::attributes::parse_global_attribute;
 pub use self::attributes::parse_global_attributes;
@@ -54,5 +54,10 @@ pub use self::core::parse_transport;
 mod offer;
 pub use self::offer::SdpOffer;
 pub use self::offer::parse_sdp_offer;
+
+mod sanitizer;
+pub use self::sanitizer::SdpSanitizer;
+pub use self::sanitizer::SanitizerError;
+pub use self::sanitizer::SdpSanitizerConfig;
 
 pub(crate) mod parse;
