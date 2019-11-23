@@ -1,6 +1,7 @@
 use crate::SdpOffer;
 use crate::core::SdpTransport;
 use crate::media::SdpMediaType;
+use crate::SdpCodecIdentifier;
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum SanitizerError {
@@ -9,7 +10,8 @@ pub enum SanitizerError {
 
 pub struct SdpSanitizerConfig {
     pub allowed_transports: Vec<SdpTransport>,
-    pub allowed_media_types: Vec<SdpMediaType>
+    pub allowed_media_types: Vec<SdpMediaType>,
+    pub allowed_codecs: Vec<SdpCodecIdentifier>
 }
 
 pub struct SdpSanitizer {
@@ -27,19 +29,23 @@ impl SdpSanitizer {
     }
 
     fn sanitize(&self, mut sdp: SdpOffer) -> Result<SdpOffer, SanitizerError> {
-        let mut dex_list = vec![];
-        for (dex, media) in sdp.media.iter().enumerate() {
+        sdp.media.retain(|media| {
             if !self.cfg.allowed_media_types.contains(&media.media) {
-                dex_list.push(dex);
-                continue;
+                return false;
             }
             if !self.cfg.allowed_transports.contains(&media.transport) {
-                dex_list.push(dex);
-                continue;
+                return false;
             }
-        }
-        for dex in dex_list {
-            sdp.media.remove(dex);
+            true
+        });
+        for media in sdp.media.iter_mut() {
+            media.formats.retain(|format| {
+                if !self.cfg.allowed_codecs.contains(&format.codec) {
+                    false
+                } else {
+                    true
+                }
+            });
         }
         Ok(sdp)
     }
