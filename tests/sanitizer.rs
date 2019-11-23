@@ -33,7 +33,7 @@ m=audio 49170 RTP/AVP 0\r\n";
    let (_, sdp_offer) = parse_sdp_offer(in_data.as_ref()).expect("Failed to parse in sdp");
    let (_, expected_sdp) = parse_sdp_offer(out_data.as_ref()).expect("Failed to parse out sdp");
    let sanitizer = SdpSanitizer::new(cfg);
-   let response = sanitizer.respond(sdp_offer).expect("Failed to create sip response");
+   let response = sanitizer.sanitize(sdp_offer).expect("Failed to create sip response");
    assert_eq!(expected_sdp, response);
 }
 
@@ -74,6 +74,6 @@ let cfg = SdpSanitizerConfig {
 let (_, sdp_offer) = parse_sdp_offer(in_data.as_ref()).expect("Failed to parse in sdp");
 let (_, expected_sdp) = parse_sdp_offer(out_data.as_ref()).expect("Failed to parse out sdp");
 let sanitizer = SdpSanitizer::new(cfg);
-let response = sanitizer.respond(sdp_offer).expect("Failed to create sip response");
+let response = sanitizer.sanitize(sdp_offer).expect("Failed to create sip response");
 assert_eq!(expected_sdp, response);
 }

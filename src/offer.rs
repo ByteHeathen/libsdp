@@ -25,6 +25,7 @@ named!(pub parse_sdp_offer<SdpOffer>, do_parse!(
 
 impl SdpOffer {
 
+    /// Generate a new offer from the `origin` and the session name `name`.
     pub fn new<S: Into<String>>(origin: SdpOrigin, name: S) -> SdpOffer {
         SdpOffer {
             version: SdpVersion,
@@ -36,31 +37,37 @@ impl SdpOffer {
         }
     }
 
+    /// Add an optional attribute.
     pub fn optional_attribute(mut self, attr: SdpOptionalAttribute) -> SdpOffer {
         self.optional.push(attr);
         self
     }
 
+    /// Add all atributes removing all currently present.
     pub fn optional_attributes(mut self, attr: Vec<SdpOptionalAttribute>) -> SdpOffer {
         self.optional = attr;
         self
     }
 
+    /// Add a single `SdpAttribute` to the attribute list.
     pub fn attribute(mut self, attr: SdpAttribute) -> SdpOffer {
         self.attributes.push(attr);
         self
     }
 
+    /// Add all SdpAttributes removing any that might currently by present.
     pub fn attributes(mut self, attr: Vec<SdpAttribute>) -> SdpOffer {
         self.attributes = attr;
         self
     }
 
+    /// Add a single SdpMedia. Represents a media line.
     pub fn media(mut self, media: SdpMedia) -> SdpOffer {
         self.media.push(media);
         self
     }
 
+    /// Get the global SDP connection if this offer has one. returns none if not present.
     pub fn get_connection(&self) -> Option<SdpConnection> {
         for thing in &self.optional {
             if let SdpOptionalAttribute::Connection(conn) = thing {

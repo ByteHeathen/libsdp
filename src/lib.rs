@@ -1,3 +1,7 @@
+//! libsdp is a small utility library for parsing the sdp protocol.
+//! Mostly Intended for SIP user agents.
+
+
 #[macro_use]
 extern crate nom;
 

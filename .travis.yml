@@ -1,0 +1,7 @@
+language: rust
+rust: [nightly]
+cache: cargo
+
+script:
+  - bash -c 'cargo build --release'
+  - bash -c 'cargo test --release'
