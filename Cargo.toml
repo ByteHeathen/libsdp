@@ -6,8 +6,8 @@ edition = "2018"
 readme = "Readme.md"
 license = "MIT"
 keywords = ["voip", "sdp"]
-homepage = "https://github.com/Bytebuddha/libsdp"
-repository = "https://github.com/Bytebuddha/libsdp"
+homepage = "https://github.com/ByteHeathen/libsdp"
+repository = "https://github.com/ByteHeathen/libsdp"
 description = "A slim sdp parsing library, with a focus towards voip user agents."
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
