@@ -33,4 +33,4 @@ a=rtpmap:99 h263-1998/90000\r\n";
 
 ### dependencies
 
-- **[nom](https://crates.io/crates/nom) 5.0.1**
+- **[nom](https://crates.io/crates/nom) 5.1.0**
