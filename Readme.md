@@ -6,7 +6,8 @@
 [![Crates.io](https://img.shields.io/crates/v/libsdp.svg)](https://crates.io/crates/libsdp)
 [![Docs.rs](https://docs.rs/libsdp/badge.svg)](https://docs.rs/libsdp)
 [![Build Status](https://travis-ci.org/byteheathen/libsdp.svg?branch=master)](https://travis-ci.org/byteheathen/libsdp)
-[![Build status](https://ci.appveyor.com/api/projects/status/806nir2h407jkndr?svg=true)](https://ci.appveyor.com/project/byteheathen/libsdp)
+[![Build status](https://ci.appveyor.com/api/projects/status/ycg6dtygj09xj33d?svg=true)](https://ci.appveyor.com/project/bytebuddha/libsdp-d00bv)
+
 
 libsdp is a parser for the Session Description Protocol, Mostly intended for
 SDP's use in SIP messages.
