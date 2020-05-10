@@ -15,6 +15,15 @@ use crate::parse_attribute_type;
 use super::parse_media_type;
 use crate::attributes::parse_rtpmap;
 
+use nom::{
+    IResult,
+    character::complete::char,
+    bytes::complete::{take_until, take_while,tag},
+    combinator::{opt, map_res}
+};
+
+pub type RawAttribute = (SdpAttributeType, Option<SdpCodecIdentifier>, Option<String>);
+
 pub fn parse_media_lines(input: &[u8]) -> ParserResult<Vec<SdpMedia>> {
     let mut output = vec![];
     let mut data = input;
@@ -25,19 +34,26 @@ pub fn parse_media_lines(input: &[u8]) -> ParserResult<Vec<SdpMedia>> {
     Ok((data, output))
 }
 
-named!(pub parse_media<SdpMedia>, do_parse!(
-    opt!(tag!("\r\n")) >>
-    tag!("m=") >>
-    media: map_res!(take_while!(is_alphanumeric), parse_media_type) >>
-    char!(' ') >>
-    port: map_res!(take_while!(is_digit), parse_u32) >>
-    port_count: opt!(parse_optional_port) >>
-    char!(' ') >>
-    transport: parse_transport >>
-    char!(' ') >>
-    formats: parse_attribute_list >>
-    (SdpMedia { media: media.1, port, port_count, transport, attributes: formats.0, formats: formats.1 })
-));
+pub fn parse_media(input: &[u8]) -> IResult<&[u8], SdpMedia> {
+    let (input, _) = opt(tag("\r\n"))(input)?;
+    let (input, _) = tag("m=")(input)?;
+    let (input, media) = map_res(take_while(is_alphanumeric), parse_media_type)(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, port) = map_res(take_while(is_digit), parse_u32)(input)?;
+    let (input, port_count) = opt(parse_optional_port)(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, transport) = parse_transport(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, formats) = parse_attribute_list(input)?;
+    Ok((input, SdpMedia {
+        media: media.1,
+        port,
+        port_count,
+        transport,
+        attributes: formats.0,
+        formats: formats.1 
+    }))
+}
 
 pub fn parse_attribute_list(input: &[u8]) -> ParserResult<(Vec<SdpAttribute>, Vec<SdpMediaFormat>)> {
      let mut initial_data = input;
@@ -106,27 +122,31 @@ pub fn parse_attribute_list(input: &[u8]) -> ParserResult<(Vec<SdpAttribute>, Ve
      Ok((initial_data, (global, formats)))
 }
 
-named!(pub parse_attribute<(SdpAttributeType, Option<SdpCodecIdentifier>, Option<String>)>, do_parse!(
-    tag!("a=") >>
-    ty: parse_attribute_type >>
-    opt!(char!(':')) >>
-    //port: map_res!(take_while!(is_digit), parse_u32) >>
-    //port_count: opt!(parse_optional_port) >>
-    codec: opt!(parse_codec_identifier) >>
-    opt!(char!(' ')) >>
-    value: opt!(map_res!(take_until!("\r"), slice_to_string)) >>
-    tag!("\r\n") >>
-    ((ty, codec, value))
-));
+pub fn parse_attribute(input: &[u8]) -> IResult<&[u8], RawAttribute> {
+    let (input, _) = tag("a=")(input)?;
+    let (input, ty) = parse_attribute_type(input)?;
+    let (input, _) = opt(char(':'))(input)?;
+    //let (input, port) = map_res(take_while(is_digit), parse_u32)(input)?;
+    //let (input, port_count) = opt(parse_optional_port)(input)?;
+    let (input, codec) = opt(parse_codec_identifier)(input)?;
+    let (input, _) = opt(char(' '))(input)?;
+    let (input, value) = opt(map_res(take_until("\r"), slice_to_string))(input)?;
+    let (input, _) = tag("\r\n")(input)?;
+    Ok((input, (ty, codec, value)))
+}
 
-named!(pub parse_optional_port<u32>, do_parse!(
-    tag!("/") >>
-    count: map_res!(take_while!(is_digit), parse_u32) >>
-    (count)
-));
+pub fn parse_optional_port(input: &[u8]) -> IResult<&[u8], u32> {
+    let (input, _) = tag("/")(input)?;
+    let (input, count) = map_res(take_while(is_digit), parse_u32)(input)?;
+    Ok((input, count))
+}
 
-named!(pub parse_initial_media_format<SdpMediaFormat>, do_parse!(
-    opt!(char!(' ')) >>
-    codec: parse_codec_identifier >>
-    (SdpMediaFormat { codec: codec , connection: None, attributes: vec![] })
-));
+pub fn parse_initial_media_format(input: &[u8]) -> IResult<&[u8], SdpMediaFormat> {
+    let (input, _) = opt(char(' '))(input)?;
+    let (input, codec) = parse_codec_identifier(input)?;
+    Ok((input, SdpMediaFormat {
+        codec,
+        connection: None,
+        attributes: vec![]
+    }))
+}

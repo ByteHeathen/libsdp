@@ -1,4 +1,3 @@
-use nom::character::*;
 use nom::error::ErrorKind;
 
 use std::io::Error as IoError;
@@ -35,7 +34,3 @@ pub fn parse_u64(slice: &[u8]) -> Result<u64, IoError> {
 		.map_err(|_| IoError::new(IoErrorKind::InvalidInput, "Failed to parse u64 integer"))?
 	)
 }
-
-named!(pub parse_string<String>, map_res!(
-    take_while!(is_alphanumeric), slice_to_string
-));

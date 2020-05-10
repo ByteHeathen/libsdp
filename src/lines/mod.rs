@@ -27,30 +27,36 @@ use crate::SdpOptionalAttribute;
 
 use crate::parse::slice_to_string;
 
-named!(pub parse_email_line<SdpOptionalAttribute>, do_parse!(
-    tag!("e=") >>
-    output: map_res!(take_until!("\r"), slice_to_string) >>
-    tag!("\r\n") >>
-    (SdpOptionalAttribute::Email(output))
-));
+use nom::{
+    IResult,
+    bytes::complete::{tag,take_until},
+    combinator::map_res
+};
 
-named!(pub parse_phone_line<SdpOptionalAttribute>, do_parse!(
-    tag!("e=") >>
-    output: map_res!(take_until!("\r"), slice_to_string) >>
-    tag!("\r\n") >>
-    (SdpOptionalAttribute::Phone(output))
-));
+pub fn parse_email_line(input: &[u8]) -> IResult<&[u8], SdpOptionalAttribute> {
+    let (input, _) = tag("e=")(input)?;
+    let (input, output) = map_res(take_until("\r"), slice_to_string)(input)?;
+    let (input, _) = tag("\r\n")(input)?;
+    Ok((input, SdpOptionalAttribute::Email(output)))
+}
 
-named!(pub parse_information_line<SdpOptionalAttribute>, do_parse!(
-    tag!("i=") >>
-    output: map_res!(take_until!("\r"), slice_to_string) >>
-    tag!("\r\n") >>
-    (SdpOptionalAttribute::Information(output))
-));
+pub fn parse_phone_line(input: &[u8]) -> IResult<&[u8], SdpOptionalAttribute> {
+    let (input, _) = tag("e=")(input)?;
+    let (input, output) = map_res(take_until("\r"), slice_to_string)(input)?;
+    let (input, _) = tag("\r\n")(input)?;
+    Ok((input, SdpOptionalAttribute::Phone(output)))
+}
 
-named!(pub parse_uri_line<SdpOptionalAttribute>, do_parse!(
-    tag!("u=") >>
-    output: map_res!(take_until!("\r"), slice_to_string) >>
-    tag!("\r\n") >>
-    (SdpOptionalAttribute::Uri(output))
-));
+pub fn parse_information_line(input: &[u8]) -> IResult<&[u8], SdpOptionalAttribute> {
+    let (input, _) = tag("i=")(input)?;
+    let (input, output) = map_res(take_until("\r"), slice_to_string)(input)?;
+    let (input, _) = tag("\r\n")(input)?;
+    Ok((input, SdpOptionalAttribute::Information(output)))
+}
+
+pub fn parse_uri_line(input: &[u8]) -> IResult<&[u8], SdpOptionalAttribute> {
+    let (input, _) = tag("u=")(input)?;
+    let (input, output) = map_res(take_until("\r"), slice_to_string)(input)?;
+    let (input, _) = tag("\r\n")(input)?;
+    Ok((input, SdpOptionalAttribute::Uri(output)))
+}

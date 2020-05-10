@@ -1,5 +1,12 @@
 use std::fmt;
 
+use nom::{
+    IResult,
+    branch::alt,
+    combinator::map,
+    bytes::complete::tag_no_case
+};
+
 #[derive(Debug, PartialEq, Clone)]
 pub enum SdpAttributeType {
     Rtpmap,
@@ -21,10 +28,12 @@ impl fmt::Display for SdpAttributeType {
     }
 }
 
-named!(pub parse_attribute_type<SdpAttributeType>, alt!(
-    map!(tag_no_case!("rtpmap"), |_| SdpAttributeType::Rtpmap) |
-    map!(tag_no_case!("fmtp"), |_| SdpAttributeType::Fmtp) |
-    map!(tag_no_case!("recvonly"), |_| SdpAttributeType::RecvOnly) |
-    map!(tag_no_case!("sendrecv"), |_| SdpAttributeType::SendRecv) |
-    map!(tag_no_case!("sendonly"), |_| SdpAttributeType::SendOnly)
-));
+pub fn parse_attribute_type(input: &[u8]) -> IResult<&[u8], SdpAttributeType> {
+    alt((
+      map(tag_no_case("rtpmap"), |_| SdpAttributeType::Rtpmap),
+      map(tag_no_case("fmtp"), |_| SdpAttributeType::Fmtp),
+      map(tag_no_case("recvonly"), |_| SdpAttributeType::RecvOnly),
+      map(tag_no_case("sendrecv"), |_| SdpAttributeType::SendRecv),
+      map(tag_no_case("sendonly"), |_| SdpAttributeType::SendOnly)
+    ))(input)
+}

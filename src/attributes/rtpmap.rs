@@ -6,6 +6,12 @@ use crate::media::parse_encoding;
 
 use std::fmt;
 
+use nom::{
+    IResult,
+    bytes::complete::{tag, take_while},
+    combinator::{map_res, opt}
+};
+
 #[derive(Debug, PartialEq, Clone)]
 pub struct RtpMap {
     pub encoding: SdpEncoding,
@@ -30,11 +36,11 @@ impl fmt::Display for RtpMap {
     }
 }
 
-named!(pub parse_rtpmap<RtpMap>, do_parse!(
-    encoding: parse_encoding >>
-    tag!("/") >>
-    clock_rate: map_res!(take_while!(is_digit), parse_u64) >>
-    opt!(tag!("/")) >>
-    params: opt!(map_res!(take_while!(is_digit), parse_u64)) >>
-    (RtpMap { encoding, clock_rate, params })
-));
+pub fn parse_rtpmap(input: &[u8]) -> IResult<&[u8], RtpMap> {
+    let (input, encoding) = parse_encoding(input)?;
+    let (input, _) = tag("/")(input)?;
+    let (input, clock_rate) = map_res(take_while(is_digit), parse_u64)(input)?;
+    let (input, _) = opt(tag("/"))(input)?;
+    let (input, params) = opt(map_res(take_while(is_digit), parse_u64))(input)?;
+    Ok((input, RtpMap { encoding, clock_rate, params }))
+}

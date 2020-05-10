@@ -3,6 +3,11 @@ use nom::character::is_digit;
 use crate::parse::parse_u32;
 
 use std::fmt;
+use nom::{
+    IResult,
+    combinator::map_res,
+    bytes::complete::take_while
+};
 
 // https://www.iana.org/assignments/rtp-parameters/rtp-parameters.xhtml#rtp-parameters-1
 
@@ -15,7 +20,7 @@ impl fmt::Display for SdpCodecIdentifier {
     }
 }
 
-named!(pub parse_codec_identifier<SdpCodecIdentifier>, do_parse!(
-    num: map_res!(take_while!(is_digit), parse_u32) >>
-    (SdpCodecIdentifier(num))
-));
+pub fn parse_codec_identifier(input: &[u8]) -> IResult<&[u8], SdpCodecIdentifier> {
+    let (input, num) = map_res(take_while(is_digit), parse_u32)(input)?;
+    Ok((input, SdpCodecIdentifier(num)))
+}

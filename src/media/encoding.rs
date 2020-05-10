@@ -4,6 +4,13 @@ use crate::parse::slice_to_string;
 
 use std::fmt;
 
+use nom::{
+    IResult,
+    branch::alt,
+    combinator::{map, map_res},
+    bytes::complete::{tag_no_case, take_while},
+};
+
 #[derive(Debug, PartialEq, Clone)]
 pub enum SdpEncoding {
     Pcmu,
@@ -11,16 +18,18 @@ pub enum SdpEncoding {
     Unknown(String)
 }
 
-named!(pub parse_encoding<SdpEncoding>, alt!(
-    map!(tag_no_case!("pcmu"), |_| SdpEncoding::Pcmu) |
-    map!(tag_no_case!("pcma"), |_| SdpEncoding::Pcma) |
-    parse_unknown_encoding
-));
+pub fn parse_encoding(input: &[u8]) -> IResult<&[u8], SdpEncoding> {
+    alt((
+      map(tag_no_case("pcmu"), |_| SdpEncoding::Pcmu),
+      map(tag_no_case("pcma"), |_| SdpEncoding::Pcma),
+      parse_unknown_encoding
+    ))(input)
+}
 
-named!(parse_unknown_encoding<SdpEncoding>, do_parse!(
-    data: map_res!(take_while!(|item| is_alphanumeric(item) || b'-' == item), slice_to_string) >>
-    (SdpEncoding::Unknown(data))
-));
+fn parse_unknown_encoding(input: &[u8]) -> IResult<&[u8], SdpEncoding> {
+    let (input, data) = map_res(take_while(|item| is_alphanumeric(item) || b'-' == item), slice_to_string)(input)?;
+    Ok((input, SdpEncoding::Unknown(data)))
+}
 
 impl fmt::Display for SdpEncoding {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

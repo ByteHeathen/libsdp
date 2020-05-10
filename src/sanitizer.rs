@@ -3,6 +3,7 @@ use crate::core::SdpTransport;
 use crate::media::SdpMediaType;
 use crate::SdpCodecIdentifier;
 
+/// Error returned by the SdpSanitizer
 #[derive(Debug, PartialEq, Clone)]
 pub enum SanitizerError {
     SanitizeError
@@ -30,10 +31,12 @@ pub struct SdpSanitizer {
 
 impl SdpSanitizer {
 
+    /// Create a new Instance of the SdpSanitizer
     pub fn new(cfg: SdpSanitizerConfig) -> SdpSanitizer {
         SdpSanitizer { cfg }
     }
 
+    /// Run the santizer on the given SdpOffer
     pub fn sanitize(&self, sdp: SdpOffer) -> Result<SdpOffer, SanitizerError> {
         Ok(self._sanitize(sdp)?)
     }
@@ -50,11 +53,7 @@ impl SdpSanitizer {
         });
         for media in sdp.media.iter_mut() {
             media.formats.retain(|format| {
-                if !self.cfg.allowed_codecs.contains(&format.codec) {
-                    false
-                } else {
-                    true
-                }
+                self.cfg.allowed_codecs.contains(&format.codec)
             });
         }
         Ok(sdp)

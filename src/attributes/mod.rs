@@ -1,3 +1,10 @@
+use nom::{
+    IResult,
+    branch::alt,
+    bytes::complete::{tag,take_until},
+    combinator::{map, map_res},
+};
+
 use crate::parse::slice_to_string;
 use crate::parse::ParserResult;
 
@@ -15,6 +22,7 @@ mod rtpmap;
 pub use self::rtpmap::RtpMap;
 pub use self::rtpmap::parse_rtpmap;
 
+
 #[derive(Debug, PartialEq, Clone)]
 pub enum SdpAttribute {
     SendOnly,
@@ -24,25 +32,27 @@ pub enum SdpAttribute {
     Fmtp(String)
 }
 
-named!(pub parse_global_attribute<SdpAttribute>, alt!(
-    map!(tag!("a=sendrecv"), |_| SdpAttribute::SendOnly) |
-    map!(tag!("a=recvonly"), |_| SdpAttribute::RecvOnly) |
-    map!(tag!("a=sendrecv"), |_| SdpAttribute::SendRecv) |
-    parse_rtpmap_attribute |
-    parse_fmtp_attribute
-));
+pub fn parse_global_attribute(input: &[u8]) -> IResult<&[u8], SdpAttribute> {
+     alt((
+       map(tag("a=sendrecv"), |_| SdpAttribute::SendOnly),
+       map(tag("a=recvonly"), |_| SdpAttribute::RecvOnly),
+       map(tag("a=sendrecv"), |_| SdpAttribute::SendRecv),
+       parse_rtpmap_attribute,
+       parse_fmtp_attribute
+     ))(input)
+}
 
-named!(pub parse_rtpmap_attribute<SdpAttribute>, do_parse!(
-    tag!("a=rtpmap ") >>
-    data: parse_rtpmap >>
-    (SdpAttribute::RtpMap(data))
-));
+pub fn parse_rtpmap_attribute(input: &[u8]) -> IResult<&[u8], SdpAttribute> {
+    let (input, _) = tag("a=rtpmap ")(input)?;
+    let (input, data) = parse_rtpmap(input)?;
+    Ok((input, SdpAttribute::RtpMap(data)))
+}
 
-named!(pub parse_fmtp_attribute<SdpAttribute>, do_parse!(
-    tag!("a=fmtp ") >>
-    data: map_res!(take_until!("\r"), slice_to_string) >>
-    (SdpAttribute::Fmtp(data))
-));
+pub fn parse_fmtp_attribute(input: &[u8]) -> IResult<&[u8], SdpAttribute> {
+    let (input, _) = tag("a=fmtp ")(input)?;
+    let (input, data) = map_res(take_until("\r"), slice_to_string)(input)?;
+    Ok((input, SdpAttribute::Fmtp(data)))
+}
 
 pub fn parse_global_attributes(input: &[u8]) -> ParserResult<Vec<SdpAttribute>> {
     let mut output = vec![];

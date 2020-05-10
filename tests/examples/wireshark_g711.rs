@@ -1,5 +1,4 @@
 use libsdp::*;
-use libsdp::attributes::RtpMap;
 
 #[test]
 fn parse() {

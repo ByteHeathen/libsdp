@@ -26,14 +26,21 @@ impl SdpConnection {
     }
 }
 
-named!(pub parse_connection<SdpConnection>, do_parse!(
-    network_type: parse_network_type >>
-    char!(' ') >>
-    address_type: parse_address_type >>
-    char!(' ') >>
-    address: map_res!(take_until!("\r"), slice_to_string) >>
-    (SdpConnection { network_type, address_type, address })
-));
+use nom::{
+    IResult,
+    character::complete::char,
+    combinator::map_res,
+    bytes::complete::{take_until, tag}
+};
+
+pub fn parse_connection(input: &[u8]) -> IResult<&[u8], SdpConnection> {
+    let (input, network_type) = parse_network_type(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, address_type) = parse_address_type(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, address) = map_res(take_until("\r"), slice_to_string)(input)?;
+    Ok((input, SdpConnection { network_type, address_type, address }))
+}
 
 impl fmt::Display for SdpConnection {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -41,9 +48,9 @@ impl fmt::Display for SdpConnection {
     }
 }
 
-named!(pub parse_connection_name<SdpOptionalAttribute>, do_parse!(
-    tag!("c=") >>
-    conn: parse_connection >>
-    tag!("\r\n") >>
-    (SdpOptionalAttribute::Connection(conn))
-));
+pub fn parse_connection_name(input: &[u8]) -> IResult<&[u8], SdpOptionalAttribute> {
+    let (input, _) = tag("c=")(input)?;
+    let (input, conn) = parse_connection(input)?;
+    let (input, _) = tag("\r\n")(input)?;
+    Ok((input, SdpOptionalAttribute::Connection(conn)))
+}

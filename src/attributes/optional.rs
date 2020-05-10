@@ -10,6 +10,11 @@ use crate::SdpTiming;
 use crate::SdpConnection;
 use crate::SdpBandwidth;
 
+use nom::{
+    IResult,
+    branch::alt,
+};
+
 use std::fmt;
 
 #[derive(Debug, PartialEq, Clone)]
@@ -37,16 +42,17 @@ impl fmt::Display for SdpOptionalAttribute {
     }
 }
 
-
-named!(pub parse_optional_sdp_attribute<SdpOptionalAttribute>, alt!(
-    parse_uri_line |
-    parse_time_line |
-    parse_bandwidth_line |
-    parse_connection_name |
-    parse_email_line |
-    parse_phone_line |
-    parse_information_line
-));
+pub fn parse_optional_sdp_attribute(input: &[u8]) -> IResult<&[u8], SdpOptionalAttribute> {
+    alt((
+      parse_uri_line,
+      parse_time_line,
+      parse_bandwidth_line,
+      parse_connection_name,
+      parse_email_line,
+      parse_phone_line,
+      parse_information_line
+    ))(input)
+}
 
 pub fn parse_optional_attributes(input: &[u8]) -> ParserResult<Vec<SdpOptionalAttribute>> {
     let mut output = vec![];

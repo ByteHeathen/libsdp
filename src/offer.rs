@@ -1,8 +1,10 @@
 use crate::*;
 use crate::attributes::parse_optional_attributes;
 
+use nom::IResult;
 use std::fmt;
 
+/// A Single Sdp Message
 #[derive(Debug, PartialEq, Clone)]
 pub struct SdpOffer {
     pub version: SdpVersion,
@@ -13,15 +15,16 @@ pub struct SdpOffer {
     pub media: Vec<SdpMedia>
 }
 
-named!(pub parse_sdp_offer<SdpOffer>, do_parse!(
-    version: parse_version_line >>
-    origin: parse_origin_line >>
-    name: parse_session_name_line >>
-    optional: parse_optional_attributes >>
-    attributes: parse_global_attributes >>
-    media: parse_media_lines >>
-    (SdpOffer { version, origin, name, optional, attributes, media })
-));
+/// Parse this input data into an SdpOffer.
+pub fn parse_sdp_offer(input: &[u8]) -> IResult<&[u8], SdpOffer> {
+    let (input, version) = parse_version_line(input)?;
+    let (input, origin) = parse_origin_line(input)?;
+    let (input, name) = parse_session_name_line(input)?;
+    let (input, optional) = parse_optional_attributes(input)?;
+    let (input, attributes) = parse_global_attributes(input)?;
+    let (input, media) = parse_media_lines(input)?;
+    Ok((input, SdpOffer { version, origin, name, optional, attributes, media }))
+}
 
 impl SdpOffer {
 

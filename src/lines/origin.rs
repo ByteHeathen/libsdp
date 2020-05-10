@@ -38,28 +38,6 @@ impl SdpOrigin {
     }
 }
 
-named!(pub parse_origin<SdpOrigin>, do_parse!(
-    username: map_res!(take_while!(is_alphanumeric), slice_to_string) >>
-    char!(' ') >>
-    session_id: map_res!(take_while!(is_digit), parse_u64) >>
-    char!(' ') >>
-    session_version: map_res!(take_while!(is_digit), parse_u64) >>
-    char!(' ') >>
-    network_type: parse_network_type >>
-    char!(' ') >>
-    address_type: parse_address_type >>
-    char!(' ') >>
-    address: map_res!(take_until!("\r"), slice_to_string) >>
-    (SdpOrigin { username, session_id: session_id, session_version: session_version, network_type, address_type, address })
-));
-
-named!(pub parse_origin_line<SdpOrigin>, do_parse!(
-    tag!("o=") >>
-    origin: parse_origin >>
-    tag!("\r\n") >>
-    (origin)
-));
-
 impl fmt::Display for SdpOrigin {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f,
@@ -72,4 +50,33 @@ impl fmt::Display for SdpOrigin {
             self.address
          )
     }
+}
+
+use nom::{
+    IResult,
+    combinator::{map_res},
+    character::complete::char,
+    bytes::complete::{take_while, take_until, tag}
+};
+
+pub fn parse_origin(input: &[u8]) -> IResult<&[u8], SdpOrigin> {
+    let (input, username) = map_res(take_while(is_alphanumeric), slice_to_string)(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, session_id) = map_res(take_while(is_digit), parse_u64)(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, session_version) = map_res(take_while(is_digit), parse_u64)(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, network_type) = parse_network_type(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, address_type) = parse_address_type(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, address) = map_res(take_until("\r"), slice_to_string)(input)?;
+    Ok((input, SdpOrigin { username, session_id, session_version, network_type, address_type, address }))
+}
+
+pub fn parse_origin_line(input: &[u8]) -> IResult<&[u8], SdpOrigin> {
+    let (input, _) = tag("o=")(input)?;
+    let (input, origin) = parse_origin(input)?;
+    let (input, _) = tag("\r\n")(input)?;
+    Ok((input, origin))
 }

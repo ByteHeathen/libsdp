@@ -64,7 +64,6 @@ s=Talk\r
 c=IN IP4 10.1.10.120\r
 t=0 0\r
 m=audio 7078 RTP/AVP 0 8\r
-
 ";
 let cfg = SdpSanitizerConfig {
     allowed_codecs: vec![SdpCodecIdentifier(0), SdpCodecIdentifier(8)],

@@ -5,6 +5,14 @@ use crate::parse::parse_u32;
 
 use std::fmt;
 
+use nom::{
+    IResult,
+    branch::alt,
+    character::complete::char,
+    bytes::complete::{tag, take_while, take_until},
+    combinator::map_res
+};
+
 use crate::SdpOptionalAttribute;
 
 // https://www.iana.org/assignments/sdp-parameters/sdp-parameters.xhtml#sdp-parameters-3
@@ -32,47 +40,51 @@ impl fmt::Display for SdpBandwidth {
     }
 }
 
-named!(pub parse_as_bandwidth<SdpBandwidth>, do_parse!(
-    tag!("AS") >>
-    char!(' ') >>
-    count: map_res!(take_while!(is_digit), parse_u32) >>
-    (SdpBandwidth::As(count))
-));
+pub fn parse_as_bandwidth(input: &[u8]) -> IResult<&[u8], SdpBandwidth> {
+    let (input, _) = tag("AS")(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, count) = map_res(take_while(is_digit), parse_u32)(input)?;
+    Ok((input, SdpBandwidth::As(count)))
+}
 
-named!(pub parse_ct_bandwidth<SdpBandwidth>, do_parse!(
-    tag!("CT") >>
-    char!(' ') >>
-    count: map_res!(take_while!(is_digit), parse_u32) >>
-    (SdpBandwidth::Ct(count))
-));
+pub fn parse_ct_bandwidth(input: &[u8]) -> IResult<&[u8], SdpBandwidth> {
+    let (input, _) = tag("CT")(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, count) = map_res(take_while(is_digit), parse_u32)(input)?;
+    Ok((input, SdpBandwidth::Ct(count)))
+}
 
-named!(pub parse_tias_bandwidth<SdpBandwidth>, do_parse!(
-    tag!("TIAS") >>
-    char!(' ') >>
-    count: map_res!(take_while!(is_digit), parse_u32) >>
-    (SdpBandwidth::Tias(count))
-));
+pub fn parse_tias_bandwidth(input: &[u8]) -> IResult<&[u8], SdpBandwidth> {
+    let (input, _) = tag("TIAS")(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, count) = map_res(take_while(is_digit), parse_u32)(input)?;
+    Ok((input, SdpBandwidth::Tias(count)))
+}
 
-named!(pub parse_known_bandwidth<SdpBandwidth>, alt!(
-    parse_as_bandwidth |
-    parse_ct_bandwidth |
-    parse_tias_bandwidth
-));
+pub fn parse_known_bandwidth(input: &[u8]) -> IResult<&[u8], SdpBandwidth> {
+    alt((
+      parse_as_bandwidth,
+      parse_ct_bandwidth,
+      parse_tias_bandwidth
+    ))(input)
+}
 
-named!(pub parse_unknown_bandwidth<SdpBandwidth>, do_parse!(
-    key: map_res!(take_until!(" "), slice_to_string) >>
-    char!(' ') >>
-    value: map_res!(take_while!(is_digit), parse_u32) >>
-    (SdpBandwidth::Unknown(key, value))
-));
+pub fn parse_unknown_bandwidth(input: &[u8]) -> IResult<&[u8], SdpBandwidth> {
+    let (input, key) = map_res(take_until(" "), slice_to_string)(input)?;
+    let (input, _) = char(' ')(input)?;
+    let (input, value) = map_res(take_while(is_digit), parse_u32)(input)?;
+    Ok((input, SdpBandwidth::Unknown(key, value)))
+}
 
-named!(pub parse_bandwidth<SdpBandwidth>, alt!(
-    parse_known_bandwidth |
-    parse_unknown_bandwidth
-));
+pub fn parse_bandwidth(input: &[u8]) -> IResult<&[u8], SdpBandwidth> {
+    alt((
+      parse_known_bandwidth,
+      parse_unknown_bandwidth
+    ))(input)
+}
 
-named!(pub parse_bandwidth_line<SdpOptionalAttribute>, do_parse!(
-    tag!("b=") >>
-    width: parse_bandwidth >>
-    (SdpOptionalAttribute::Bandwidth(width))
-));
+pub fn parse_bandwidth_line(input: &[u8]) -> IResult<&[u8], SdpOptionalAttribute> {
+    let (input, _) = tag("b=")(input)?;
+    let (input, width) = parse_bandwidth(input)?;
+    Ok((input, SdpOptionalAttribute::Bandwidth(width)))
+}
